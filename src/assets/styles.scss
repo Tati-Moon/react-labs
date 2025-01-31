@@ -1,0 +1,262 @@
+$dark-background: #1a1a1a;
+$dark-menu: #2a2a2a;
+$red-button: #ff4d4d;
+$red-button-hover: #ff4d4da9;
+$gray-table-hover: #3a3a3a;
+$gray-table: #2a2a2a;
+$gray-details: #3a3a3a;
+$gray-input: #3a3a3a;
+$text-light: #ffffff;
+$text-dark: #cccccc;
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: $dark-background;
+  color: $text-light;
+}
+
+.logoIcon {
+  height: 40px;
+}
+
+.top-menu {
+  background-color: $dark-menu;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+
+  .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: $text-light;
+    transition:
+      color 0.3s ease,
+      transform 0.3s ease;
+
+    &:hover {
+      color: $red-button;
+      transform: scale(1.1);
+      cursor: pointer;
+    }
+  }
+
+  .search-container {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    margin: 0 20px;
+
+    .search-input {
+      padding: 8px;
+      border: none;
+      border-radius: 4px;
+      background-color: $gray-input;
+      color: $text-light;
+      outline: none;
+      flex-grow: 1;
+
+      &::placeholder {
+        color: $text-dark;
+      }
+    }
+
+    .search-button {
+      padding: 8px;
+      background-color: $red-button;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      img {
+        width: 20px;
+        height: 20px;
+        transition:
+          width 0.3s ease,
+          height 0.3s ease;
+      }
+
+      &:hover {
+        img {
+          width: 24px;
+          height: 24px;
+        }
+        background-color: $red-button-hover;
+      }
+    }
+  }
+}
+
+h1 {
+  text-align: center;
+  margin: 20px 0;
+  color: $text-light;
+}
+
+.card {
+  border: 1px solid $gray-table;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 10px 0;
+  background-color: $gray-table;
+  color: $text-light;
+
+  &:hover {
+    background-color: $gray-table-hover;
+  }
+
+  .card-content {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+
+    .card-name {
+      flex: 40%;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .card-details {
+      flex: 60%;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 10px;
+      padding: 10px;
+      background-color: $gray-table-hover;
+      border-radius: 4px;
+      border-style: double;
+      border-color: $dark-background;
+
+      pre {
+        margin: 0;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+      }
+
+      .detail-item {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+
+        .detail-label {
+          font-weight: bold;         
+          color: $text-dark;
+        }
+
+        .detail-value {
+          color: $text-light;
+          margin-left: 10px;
+        }
+      }
+    }
+  }
+}
+
+.loading {
+  text-align: center;
+  font-size: 18px;
+  color: $text-light;
+  margin-top: 20px;
+}
+
+.error {
+  text-align: center;
+  font-size: 18px;
+  color: $red-button;
+  margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+  .top-menu {
+    flex-direction: column;
+    align-items: stretch;
+
+    .logo {
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .search-container {
+      width: 100%;
+      margin: 0;
+
+      .search-input {
+        width: 60%;
+      }
+
+      .search-button {
+        width: 40%;
+      }
+    }
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  .card {
+    .card-content {
+      flex-direction: column; 
+
+      .card-name {
+        flex: 100%;
+        margin-bottom: 0px;
+      }
+
+      .card-details {
+        flex: 100%;
+        margin-top: 0px;
+        padding: 10px;
+      }
+    }
+  }
+}
+
+@media (min-width: 769px) {
+  .top-menu {
+    .search-container {
+      .search-input {
+        width: 80%;
+      }
+
+      .search-button {
+        width: 20%;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .top-menu {
+    padding: 10px;
+
+    .search-container {
+      button {
+        padding: 6px;
+
+        img {
+          width: 16px;
+          height: 16px;
+        }
+
+        &:hover {
+          img {
+            width: 20px;
+            height: 20px;
+          }
+        }
+      }
+    }
+  }
+
+  h1 {
+    font-size: 20px;
+  }
+}
