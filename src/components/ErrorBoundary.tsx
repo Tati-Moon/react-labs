@@ -14,7 +14,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError(_: Error): ErrorBoundaryState {
+  static getDerivedStateFromError(): ErrorBoundaryState {
     return { hasError: true };
   }
 
@@ -25,9 +25,13 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   render(): ReactNode {
     if (this.state.hasError) {
       return (
-        <div className="error-boundary">
-          <h2>Something went wrong.</h2>
-          <p>Please try again later.</p>
+        <div className="error-screen">
+          <h1>Unexpected Error</h1>
+          <p>
+            Something went wrong. Please try refreshing the page or contact
+            support.
+          </p>
+          <button onClick={() => window.location.reload()}>Reload Page</button>
         </div>
       );
     }

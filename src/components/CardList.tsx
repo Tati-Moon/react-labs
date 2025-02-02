@@ -21,7 +21,13 @@ class CardList extends Component<CardListProps> {
     }
 
     if (error) {
-      return <div className="error">{error}</div>;
+      return (
+        <div className="error">
+          Oops! Something went wrong. Please check your internet connection.
+          <br />
+          Try refreshing the page or checking your connection.
+        </div>
+      );
     }
 
     return (

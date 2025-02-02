@@ -7,9 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "lint": "eslint . --ext ts,tsx --fix",
+    "lint": "eslint . --fix",
     "format:fix": "prettier --write .",
-    "prepare": "husky install",
+    "prepare": "husky",
     "test": "jest --passWithNoTests"
   },
   "dependencies": {

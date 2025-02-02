@@ -93,6 +93,25 @@ body {
   }
 }
 
+.error-button {
+  padding: 8px;
+  background-color: $red-button;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    img {
+      width: 24px;
+      height: 24px;
+    }
+    background-color: $red-button-hover;
+  }
+}
+
 h1 {
   text-align: center;
   margin: 20px 0;
@@ -146,7 +165,7 @@ h1 {
         align-items: center;
 
         .detail-label {
-          font-weight: bold;         
+          font-weight: bold;
           color: $text-dark;
         }
 
@@ -203,7 +222,7 @@ h1 {
 
   .card {
     .card-content {
-      flex-direction: column; 
+      flex-direction: column;
 
       .card-name {
         flex: 100%;

@@ -5,6 +5,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import './assets/styles.scss';
 import logoIcon from './assets/icons/logo.png';
 import { PEOPLE_ENDPOINT } from './assets/constants';
+import ErrorButton from './components/ErrorButton';
 
 interface AppState {
   results: Array<{ name: string; url: string }>;
@@ -12,8 +13,8 @@ interface AppState {
   error: string | null;
 }
 
-class App extends Component<{}, AppState> {
-  constructor(props: {}) {
+class App extends Component<object, AppState> {
+  constructor(props: object) {
     super(props);
     this.state = {
       results: [],
@@ -65,9 +66,9 @@ class App extends Component<{}, AppState> {
             </div>
           </div>
           <h1>Star Wars Character Search</h1>
-          {loading && <div className="loading">Loading...</div>}
-          {error && <div className="error">{error}</div>}
           <CardList results={results} loading={loading} error={error} />
+
+          <ErrorButton />
         </div>
       </ErrorBoundary>
     );

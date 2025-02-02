@@ -34,7 +34,7 @@ npm install
 npm run dev
 ```
 
-3. Set up ESLint и Prettier
+3. Set up ESLint and Prettier
 
 ```bash
 npm install -D eslint-plugin-react eslint-plugin-prettier eslint-config-prettier eslint-plugin-react-compiler@beta
