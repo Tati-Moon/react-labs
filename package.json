@@ -11,7 +11,7 @@
     "format:fix": "prettier --write .",
     "prepare": "husky",
     "test:watch": "jest --watchAll",
-    "test:coverage": "jest --coverage"
+    "test": "jest --coverage"
   },
   "dependencies": {
     "react": "^18.3.1",
