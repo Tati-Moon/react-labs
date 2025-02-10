@@ -109,66 +109,6 @@ h1 {
   color: $text-light;
 }
 
-.card {
-  border: 1px solid $gray-table;
-  border-radius: 8px;
-  padding: 16px;
-  margin: 10px 0;
-  background-color: $gray-table;
-  color: $text-light;
-
-  &:hover {
-    background-color: $gray-table-hover;
-  }
-
-  .card-content {
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-
-    .card-name {
-      flex: 40%;
-      font-size: 18px;
-      font-weight: bold;
-    }
-
-    .card-details {
-      flex: 60%;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      margin-top: 10px;
-      padding: 10px;
-      background-color: $gray-table-hover;
-      border-radius: 4px;
-      border-style: double;
-      border-color: $dark-background;
-
-      pre {
-        margin: 0;
-        white-space: pre-wrap;
-        word-wrap: break-word;
-      }
-
-      .detail-item {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-
-        .detail-label {
-          font-weight: bold;
-          color: $text-dark;
-        }
-
-        .detail-value {
-          color: $text-light;
-          margin-left: 10px;
-        }
-      }
-    }
-  }
-}
-
 .loading {
   text-align: center;
   font-size: 18px;
@@ -272,23 +212,7 @@ h1 {
   h1 {
     font-size: 24px;
   }
-
-  .card {
-    .card-content {
-      flex-direction: column;
-
-      .card-name {
-        flex: 100%;
-        margin-bottom: 0px;
-      }
-
-      .card-details {
-        flex: 100%;
-        margin-top: 0px;
-        padding: 10px;
-      }
-    }
-  }
+  
 }
 
 @media (min-width: 769px) {

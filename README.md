@@ -218,8 +218,8 @@ Link: https://github.com/rolling-scopes-school/tasks/blob/master/react/modules/t
 
 - Configured the main page to display search results.
 - On item click, the page was split into two sections:
-    - The left section continued to display search results.
-    - The right section displayed item details using Router Outlet.
+  - The left section continued to display search results.
+  - The right section displayed item details using Router Outlet.
 - Added a loading indicator while fetching additional details.
 - Implemented a close button for the details section.
 - Allowed closing the details section by clicking on the left section.

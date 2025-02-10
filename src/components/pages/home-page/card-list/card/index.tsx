@@ -1,4 +1,5 @@
 import React from 'react';
+import './index.scss';
 import { CharacterDetails } from '../../../../../interfaces/characterDetails';
 
 interface CardProps {
@@ -26,23 +27,7 @@ const Card: React.FC<CardProps> = ({ name, details, onClick }) => {
               <span className="detail-label">Gender:</span>
               <span className="detail-value">{details.gender}</span>
             </div>
-            <div className="detail-item">
-              <span className="detail-label">Birth Year:</span>
-              <span className="detail-value">{details.birth_year}</span>
-            </div>
-            <div className="detail-item">
-              <span className="detail-label">Hair Color:</span>
-              <span className="detail-value">{details.hair_color}</span>
-            </div>
-            <div className="detail-item">
-              <span className="detail-label">Skin Color:</span>
-              <span className="detail-value">{details.skin_color}</span>
-            </div>
-            <div className="detail-item">
-              <span className="detail-label">Eye Color:</span>
-              <span className="detail-value">{details.eye_color}</span>
-            </div>
-            <button className="details-button" onClick={onClick}>
+            <button className="detail-button" onClick={onClick}>
               Details
             </button>
           </div>

@@ -51,18 +51,6 @@ describe('Card Component', () => {
 
     expect(screen.getByText('Gender:')).toBeInTheDocument();
     expect(screen.getByText(mockCharacter.gender)).toBeInTheDocument();
-
-    expect(screen.getByText('Birth Year:')).toBeInTheDocument();
-    expect(screen.getByText(mockCharacter.birth_year)).toBeInTheDocument();
-
-    expect(screen.getByText('Hair Color:')).toBeInTheDocument();
-    expect(screen.getByText(mockCharacter.hair_color)).toBeInTheDocument();
-
-    expect(screen.getByText('Skin Color:')).toBeInTheDocument();
-    expect(screen.getByText(mockCharacter.skin_color)).toBeInTheDocument();
-
-    expect(screen.getByText('Eye Color:')).toBeInTheDocument();
-    expect(screen.getByText(mockCharacter.eye_color)).toBeInTheDocument();
   });
 
   test('calls onClick when "Details" button is clicked', () => {
