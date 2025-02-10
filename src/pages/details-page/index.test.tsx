@@ -10,6 +10,7 @@ import { useParams } from 'react-router-dom';
 import { CharacterDetailsBuilder } from '../../components/tests/utils/characterDetailsBuilder';
 
 jest.mock('../../assets/icons/load.gif', () => 'mocked-load.gif');
+jest.mock('../../assets/icons/close.png', () => 'mocked-close.png');
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),

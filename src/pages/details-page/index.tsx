@@ -3,6 +3,7 @@ import { useParams, useOutletContext } from 'react-router-dom';
 import { CharacterDetails } from '../../interfaces/characterDetails';
 import { PEOPLE_ENDPOINT } from '../../consts/urls';
 import loadGif from '../../assets/icons/load.gif';
+import closeIcon from '../../assets/icons/close.png';
 
 const Details: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -34,6 +35,7 @@ const Details: React.FC = () => {
   return (
     <div className="details-section">
       <button onClick={handleCloseDetails} className="close-button">
+        <img src={closeIcon} alt="close" className="closeIcon" />
         Close
       </button>
       {loading ? (

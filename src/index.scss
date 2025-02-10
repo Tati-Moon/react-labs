@@ -155,6 +155,12 @@ h1 {
     cursor: pointer;
     padding: 8px 16px;
 
+    img {
+      width: 12px;
+      height: 12px;
+      padding-right: 5px;
+    }
+
     &:hover {
       background-color: $red-button-hover;
     }
@@ -212,7 +218,6 @@ h1 {
   h1 {
     font-size: 24px;
   }
-  
 }
 
 @media (min-width: 769px) {
