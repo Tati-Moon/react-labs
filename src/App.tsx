@@ -1,78 +1,34 @@
-import { Component } from 'react';
-import Search from './components/Search';
-import CardList from './components/CardList';
-import ErrorBoundary from './components/ErrorBoundary';
-import './assets/styles.scss';
-import logoIcon from './assets/icons/logo.png';
-import { PEOPLE_ENDPOINT } from './assets/constants';
-import ErrorButton from './components/ErrorButton';
+import React from 'react';
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from 'react-router-dom';
+import ErrorBoundary from './components/shared/error-boundary';
+import './index.scss';
+import HomePage from './pages/home-page';
+import Details from './pages/details-page';
+import NotFound from './pages/not-found-page';
+import TestPage from './pages/test-page';
 
-interface AppState {
-  results: Array<{ name: string; url: string }>;
-  loading: boolean;
-  error: string | null;
-}
-
-class App extends Component<object, AppState> {
-  constructor(props: object) {
-    super(props);
-    this.state = {
-      results: [],
-      loading: false,
-      error: null,
-    };
-  }
-
-  fetchData = async (searchTerm: string = '') => {
-    this.setState({ loading: true, error: null });
-
-    try {
-      const response = await fetch(`${PEOPLE_ENDPOINT}?search=${searchTerm}`);
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      const data = await response.json();
-      this.setState({ results: data.results, loading: false });
-    } catch (error) {
-      this.setState({
-        error: `Failed to fetch data. ${error}`,
-        loading: false,
-      });
-    }
-  };
-
-  handleSearch = (term: string) => {
-    this.fetchData(term);
-    localStorage.setItem('searchTerm', term);
-  };
-
-  componentDidMount() {
-    const savedSearchTerm = localStorage.getItem('searchTerm') ?? '';
-    this.fetchData(savedSearchTerm);
-  }
-
-  render() {
-    const { results, loading, error } = this.state;
-
-    return (
+const App: React.FC = () => {
+  return (
+    <Router>
       <ErrorBoundary>
         <div className="app">
-          <div className="top-menu">
-            <div className="logo">
-              <img src={logoIcon} alt="logo" className="logoIcon" />
-            </div>
-            <div className="search-container">
-              <Search onSearch={this.handleSearch} />
-            </div>
-          </div>
-          <h1>Star Wars Character Search</h1>
-          <CardList results={results} loading={loading} error={error} />
-
-          <ErrorButton />
+          <Routes>
+            <Route path="/" element={<Navigate to="/home" replace />} />
+            <Route path="/home/*" element={<HomePage />}>
+              <Route path="details/:id" element={<Details />} /> {}
+            </Route>
+            <Route path="/test/:id" element={<TestPage />} />
+            <Route path="/not-found" element={<NotFound />} />
+          </Routes>
         </div>
       </ErrorBoundary>
-    );
-  }
-}
+    </Router>
+  );
+};
 
 export default App;

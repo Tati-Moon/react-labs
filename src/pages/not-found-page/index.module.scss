@@ -1,0 +1,28 @@
+@use '../../styles/colors.scss' as *;
+
+.notFound {
+  .pageNotFoundContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .pageNotFoundImage {
+      width: 20%;
+      height: 20%;
+    }
+  }
+
+  .linkGoHome {
+    color: $text-light;
+    text-decoration: none;
+    transition: color 0.3s ease-in-out;
+
+    &:hover {
+      color: $red-button;
+    }
+
+    &:active {
+      color: $red-button-hover;
+    }
+  }
+}

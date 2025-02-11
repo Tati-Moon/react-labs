@@ -187,3 +187,50 @@ Non-successful response.
 ```
 
 </details>
+<details>
+<summary>
+## TASK 2: React Routing. Tests.
+</summary>
+
+Link: https://github.com/rolling-scopes-school/tasks/blob/master/react/modules/tasks/routing.md
+
+## Implemented Features
+
+### Component Refactoring and Hooks
+
+- **Converted all class components into functional components except the Error Boundary component.**
+- **Created a custom hook to restore the search query from local storage.**
+- **Used appropriate React lifecycle hooks.**
+- **Ensured state management was handled within individual components.**
+
+### Routing
+
+- **Implemented routing using React Router in SPA (non-SSR) mode.**
+- **Added a 404 page for non-existing routes.**
+
+### Pagination
+
+- **Implemented pagination for the existing item list (search results).**
+- **Updated the browser URL with the current page using query parameters.**
+- **Ensured the pagination component appears after receiving the full list of items.**
+
+### Search and Item Details Display
+
+- Configured the main page to display search results.
+- On item click, the page was split into two sections:
+  - The left section continued to display search results.
+  - The right section displayed item details using Router Outlet.
+- Added a loading indicator while fetching additional details.
+- Implemented a close button for the details section.
+- Allowed closing the details section by clicking on the left section.
+- Reflected the state of the opened details section in the URL (e.g., /?frontpage=2&details=1).
+
+### Testing
+
+- Configured Jest as the test runner.
+- Ensured the test runner displayed test coverage.
+- Achieved at least 70% test coverage (excluding App.tsx).
+- Included only .tsx files in coverage.
+- Integrated React Testing Library for component testing.
+
+</details>

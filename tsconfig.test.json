@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.app.json",
+  "compilerOptions": {
+    "module": "CommonJS",
+    "noEmit": false,
+    "esModuleInterop": true
+  },
+  "include": [
+    "src/**/*.test.tsx",
+    "src/**/*.test.ts",
+    "src/**/*.tsx",
+    "src/**/*.ts"
+  ]
+}
