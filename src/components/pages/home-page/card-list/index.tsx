@@ -3,6 +3,7 @@ import Card from './card';
 import styles from './index.module.scss';
 import loadGif from '../../../../assets/icons/load.gif';
 import { CharacterDetails } from '../../../../interfaces/characterDetails';
+import { extractIdFromUrl } from '../../../../utils/urlUtils';
 
 interface CardListProps {
   results: Array<CharacterDetails>;
@@ -37,16 +38,24 @@ const CardList: React.FC<CardListProps> = ({
 
   return (
     <div className={styles.cardList}>
-      {results.map((item, index) => (
-        <Card
-          key={index}
-          name={item.name}
-          details={item}
-          onClick={() => {
-            return onItemClick(item.url.split('/').slice(-2)[0]);
-          }}
-        />
-      ))}
+      {results.map((item, index) => {
+        const id = extractIdFromUrl(item.url);
+
+        return (
+          <Card
+            key={index}
+            name={item.name}
+            details={item}
+            onClick={() => {
+              if (id) {
+                onItemClick(id);
+              } else {
+                console.error('Failed to extract ID from URL:', item.url);
+              }
+            }}
+          />
+        );
+      })}
     </div>
   );
 };
