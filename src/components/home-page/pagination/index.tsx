@@ -1,5 +1,7 @@
 import React from 'react';
-import './index.scss';
+import styles from './index.module.scss';
+import nextIcon from '../../../assets/icons/next.png';
+import previousIcon from '../../../assets/icons/previous.png';
 
 interface PaginationProps {
   currentPage: number;
@@ -20,25 +22,30 @@ const Pagination: React.FC<PaginationProps> = ({
     onPageChange(page);
   };
   return (
-    <div className="pagination-container">
-      <div className="pagination-controls">
+    <div className={styles.paginationContainer}>
+      <div className={styles.paginationControls}>
         <button
-          className="pagination-button"
+          className={styles.paginationButton}
           disabled={currentPage === 1}
           onClick={(e) => handlePageChange(e, currentPage - 1)}
         >
+          <img
+            src={previousIcon}
+            alt="previous"
+            className={styles.previousIcon}
+          />
           Previous
         </button>
-        <span className="pagination-info">
+        <span className={styles.paginationInfo}>
           Page {currentPage} of {totalPages}
         </span>
         <button
-          className="pagination-button"
+          className={styles.paginationButton}
           disabled={currentPage === totalPages}
           data-testid="next-page"
           onClick={(e) => handlePageChange(e, currentPage + 1)}
         >
-          Next
+          Next <img src={nextIcon} alt="next" className={styles.nextIcon} />
         </button>
       </div>
     </div>

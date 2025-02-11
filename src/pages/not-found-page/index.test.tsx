@@ -32,7 +32,7 @@ describe('NotFound component', () => {
 
     const image = screen.getByAltText('404') as HTMLImageElement;
     expect(image).toBeInTheDocument();
-    expect(image).toHaveClass('page-not-found-image');
+    expect(image).toHaveClass('pageNotFoundImage');
     expect(image.src).toContain('mocked-404.png');
   });
 

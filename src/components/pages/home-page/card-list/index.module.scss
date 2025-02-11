@@ -1,0 +1,21 @@
+@use '../../../../styles/colors.scss' as *;
+
+.loading {
+  text-align: center;
+  font-size: 18px;
+  color: $text-light;
+  margin-top: 20px;
+}
+
+.error {
+  text-align: center;
+  font-size: 18px;
+  color: $red-button;
+  margin-top: 20px;
+}
+
+.cardList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

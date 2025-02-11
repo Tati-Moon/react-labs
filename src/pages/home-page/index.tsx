@@ -1,10 +1,9 @@
+import styles from './index.module.scss';
+import { PEOPLE_ENDPOINT } from '../../consts/urls';
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import Pagination from '../../components/home-page/pagination';
 import { ITEMS_PER_PAGE } from '../../consts/constants';
-import './index.scss';
-import { PEOPLE_ENDPOINT } from '../../consts/urls';
-
 import logoIcon from '../../assets/icons/logo.png';
 import { CharacterDetails } from '../../interfaces/characterDetails';
 import Search from '../../components/home-page/search';
@@ -103,18 +102,16 @@ const HomePage: React.FC = () => {
 
   return (
     <>
-      <div className="top-menu">
-        <div className="logo">
-          <img src={logoIcon} alt="logo" className="logoIcon" />
+      <div className={styles.topMenu}>
+        <div className={styles.logo}>
+          <img src={logoIcon} alt="logo" className={styles.logoIcon} />
         </div>
-        <div className="search-container">
-          <Search onSearch={handleSearch} />
-        </div>
+        <Search onSearch={handleSearch} />
       </div>
       <h1>Star Wars Character Search</h1>
 
-      <div className="home-page">
-        <div className="left-section" onClick={handleLeftSectionClick}>
+      <div className={styles.homePage}>
+        <div className={styles.leftSection} onClick={handleLeftSectionClick}>
           <CardList
             results={results}
             loading={loading}
@@ -130,7 +127,7 @@ const HomePage: React.FC = () => {
           )}
         </div>
         {showDetails && (
-          <div className="right-section">
+          <div className={styles.rightSection}>
             <Outlet context={{ handleCloseDetails }} /> {}
           </div>
         )}

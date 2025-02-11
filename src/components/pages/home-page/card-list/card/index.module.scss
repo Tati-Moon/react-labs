@@ -1,6 +1,6 @@
 @use '../../../../../styles/colors.scss' as *;
 
-.card {
+.cardContainer {
   border: 1px solid $gray-table;
   border-radius: 8px;
   padding: 16px;
@@ -12,7 +12,7 @@
     background-color: $gray-table-hover;
   }
 
-  .detail-button {
+  .detailButton {
     padding: 8px;
     background-color: $red-button;
     border: none;
@@ -27,18 +27,18 @@
     }
   }
 
-  .card-content {
+  .cardContent {
     display: flex;
     flex-direction: row;
     gap: 10px;
 
-    .card-name {
+    .cardName {
       flex: 40%;
       font-size: 18px;
       font-weight: bold;
     }
 
-    .card-details {
+    .cardDetails {
       flex: 60%;
       display: flex;
       flex-direction: column;
@@ -56,17 +56,17 @@
         word-wrap: break-word;
       }
 
-      .detail-item {
+      .detailItem {
         display: flex;
         justify-content: flex-start;
         align-items: center;
 
-        .detail-label {
+        .detailLabel {
           font-weight: bold;
           color: $text-dark;
         }
 
-        .detail-value {
+        .detailValue {
           color: $text-light;
           margin-left: 10px;
         }
@@ -76,16 +76,16 @@
 }
 
 @media (max-width: 768px) {
-  .card {
-    .card-content {
+  .cardContainer {
+    .cardContent {
       flex-direction: column;
 
-      .card-name {
+      .cardName {
         flex: 100%;
         margin-bottom: 0px;
       }
 
-      .card-details {
+      .cardDetails {
         flex: 100%;
         margin-top: 0px;
         padding: 10px;

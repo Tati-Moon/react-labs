@@ -1,0 +1,8 @@
+@use '../../../styles/colors.scss' as *;
+
+.errorScreen {
+  text-align: center;
+  font-size: 18px;
+  color: $red-button;
+  margin-top: 20px;
+}

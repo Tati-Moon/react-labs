@@ -1,3 +1,4 @@
+import styles from './index.module.scss';
 import React, { useEffect, useState } from 'react';
 import { useParams, useOutletContext } from 'react-router-dom';
 import { CharacterDetails } from '../../interfaces/characterDetails';
@@ -33,46 +34,46 @@ const Details: React.FC = () => {
   }, [id]);
 
   return (
-    <div className="details-section">
-      <button onClick={handleCloseDetails} className="close-button">
-        <img src={closeIcon} alt="close" className="closeIcon" />
+    <div className={styles.detailsSection}>
+      <button onClick={handleCloseDetails} className={styles.closeButton}>
+        <img src={closeIcon} alt="close" className={styles.closeIcon} />
         Close
       </button>
       {loading ? (
-        <div className="loading">
-          <img src={loadGif} alt="Loading" className="loadGif" />
+        <div className={styles.loading}>
+          <img src={loadGif} alt="Loading" className={styles.loadGif} />
         </div>
       ) : (
         details && (
-          <div className="details-content">
+          <div className={styles.detailsContent}>
             <h2>{details.name}</h2>
-            <div className="detail-item">
-              <span className="detail-label">Height:</span>
-              <span className="detail-value">{details.height}</span>
+            <div className={styles.detailItem}>
+              <span className={styles.detailLabel}>Height:</span>
+              <span className={styles.detailValue}>{details.height}</span>
             </div>
-            <div className="detail-item">
-              <span className="detail-label">Mass:</span>
-              <span className="detail-value">{details.mass}</span>
+            <div className={styles.detailItem}>
+              <span className={styles.detailLabel}>Mass:</span>
+              <span className={styles.detailValue}>{details.mass}</span>
             </div>
-            <div className="detail-item">
-              <span className="detail-label">Gender:</span>
-              <span className="detail-value">{details.gender}</span>
+            <div className={styles.detailItem}>
+              <span className={styles.detailLabel}>Gender:</span>
+              <span className={styles.detailValue}>{details.gender}</span>
             </div>
-            <div className="detail-item">
-              <span className="detail-label">Birth Year:</span>
-              <span className="detail-value">{details.birth_year}</span>
+            <div className={styles.detailItem}>
+              <span className={styles.detailLabel}>Birth Year:</span>
+              <span className={styles.detailValue}>{details.birth_year}</span>
             </div>
-            <div className="detail-item">
-              <span className="detail-label">Hair Color:</span>
-              <span className="detail-value">{details.hair_color}</span>
+            <div className={styles.detailItem}>
+              <span className={styles.detailLabel}>Hair Color:</span>
+              <span className={styles.detailValue}>{details.hair_color}</span>
             </div>
-            <div className="detail-item">
-              <span className="detail-label">Skin Color:</span>
-              <span className="detail-value">{details.skin_color}</span>
+            <div className={styles.detailItem}>
+              <span className={styles.detailLabel}>Skin Color:</span>
+              <span className={styles.detailValue}>{details.skin_color}</span>
             </div>
-            <div className="detail-item">
-              <span className="detail-label">Eye Color:</span>
-              <span className="detail-value">{details.eye_color}</span>
+            <div className={styles.detailItem}>
+              <span className={styles.detailLabel}>Eye Color:</span>
+              <span className={styles.detailValue}>{details.eye_color}</span>
             </div>
           </div>
         )

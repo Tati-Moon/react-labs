@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from './index.module.scss';
 import searchIcon from '../../../assets/icons/search.png';
 import useLocalStorage from '../../../hooks/UseLocalStorage';
 
@@ -22,9 +23,9 @@ const Search: React.FC<SearchProps> = ({ onSearch }) => {
   };
 
   return (
-    <div className="search-container">
+    <div className={styles.searchContainer}>
       <input
-        className="search-input"
+        className={styles.searchInput}
         type="text"
         value={searchItem}
         onChange={(e) => setSearchItem(e.target.value)}
@@ -32,8 +33,9 @@ const Search: React.FC<SearchProps> = ({ onSearch }) => {
         data-testid="search-input"
         placeholder="Search for Star Wars characters..."
       />
-      <button className="search-button" onClick={handleSearch}>
-        <img src={searchIcon} alt="search" className="searchIcon" /> Search
+      <button className={styles.searchButton} onClick={handleSearch}>
+        <img src={searchIcon} alt="search" className={styles.searchIcon} />{' '}
+        Search
       </button>
     </div>
   );

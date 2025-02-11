@@ -1,5 +1,6 @@
 import React from 'react';
 import Card from './card';
+import styles from './index.module.scss';
 import loadGif from '../../../../assets/icons/load.gif';
 import { CharacterDetails } from '../../../../interfaces/characterDetails';
 
@@ -18,7 +19,7 @@ const CardList: React.FC<CardListProps> = ({
 }) => {
   if (loading) {
     return (
-      <div className="loading">
+      <div className={styles.loading}>
         <img src={loadGif} alt="Loading" className="loadGif" />
       </div>
     );
@@ -26,7 +27,7 @@ const CardList: React.FC<CardListProps> = ({
 
   if (error) {
     return (
-      <div className="error">
+      <div className={styles.error}>
         Oops! Something went wrong. Please check your internet connection.
         <br />
         Try refreshing the page or checking your connection.
@@ -35,7 +36,7 @@ const CardList: React.FC<CardListProps> = ({
   }
 
   return (
-    <div className="card-list">
+    <div className={styles.cardList}>
       {results.map((item, index) => (
         <Card
           key={index}

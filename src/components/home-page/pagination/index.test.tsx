@@ -1,6 +1,9 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import Pagination from './index';
 
+jest.mock('../../../assets/icons/next.png', () => 'mocked-next.png');
+jest.mock('../../../assets/icons/previous.png', () => 'mocked-previous.png');
+
 describe('Pagination Component', () => {
   const onPageChangeMock = jest.fn();
 
