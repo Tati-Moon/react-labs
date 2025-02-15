@@ -1,0 +1,95 @@
+@use '../../../../../styles/colors.scss' as *;
+
+.cardContainer {
+  border: 1px solid $gray-table;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 10px 0;
+  background-color: $gray-table;
+  color: $text-light;
+
+  &:hover {
+    background-color: $gray-table-hover;
+  }
+
+  .detailButton {
+    padding: 8px;
+    background-color: $red-button;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      background-color: $red-button-hover;
+    }
+  }
+
+  .cardContent {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+
+    .cardName {
+      flex: 40%;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .cardDetails {
+      flex: 60%;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 10px;
+      padding: 10px;
+      background-color: $gray-table-hover;
+      border-radius: 4px;
+      border-style: double;
+      border-color: $dark-background;
+
+      pre {
+        margin: 0;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+      }
+
+      .detailItem {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+
+        .detailLabel {
+          font-weight: bold;
+          color: $text-dark;
+        }
+
+        .detailValue {
+          color: $text-light;
+          margin-left: 10px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .cardContainer {
+    .cardContent {
+      flex-direction: column;
+
+      .cardName {
+        flex: 100%;
+        margin-bottom: 0px;
+      }
+
+      .cardDetails {
+        flex: 100%;
+        margin-top: 0px;
+        padding: 10px;
+      }
+    }
+  }
+}

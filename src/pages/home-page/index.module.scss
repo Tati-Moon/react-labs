@@ -1,0 +1,73 @@
+@use '../../styles/colors.scss' as *;
+
+.homePage {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+
+  .leftSection {
+    flex: 1;
+    cursor: pointer;
+  }
+
+  .rightSection {
+    flex: 1;
+    border-left: 2px solid $gray-table-hover;
+    padding-left: 20px;
+    position: relative;
+  }
+}
+
+.topMenu {
+  background-color: $dark-menu;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+
+  .logo {
+    img {
+      height: 30px;
+      transition:
+        color 0.3s ease,
+        transform 0.3s ease;
+    }
+
+    &:hover {
+      color: $red-button;
+      transform: scale(1.1);
+      cursor: pointer;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .homePage {
+    padding: 10px;
+  }
+
+  .topMenu {
+    flex-direction: column;
+    align-items: stretch;
+
+    .logo {
+      margin-bottom: 10px;
+      text-align: center;
+    }
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .topMenu {
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 20px;
+  }
+}

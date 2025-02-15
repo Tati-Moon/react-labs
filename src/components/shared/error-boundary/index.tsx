@@ -1,3 +1,4 @@
+import styles from './index.module.scss';
 import { Component, ErrorInfo, ReactNode } from 'react';
 
 interface ErrorBoundaryProps {
@@ -25,7 +26,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   render(): ReactNode {
     if (this.state.hasError) {
       return (
-        <div className="error-screen">
+        <div className={styles.errorScreen}>
           <h1>Unexpected Error</h1>
           <p>
             Something went wrong. Please try refreshing the page or contact
