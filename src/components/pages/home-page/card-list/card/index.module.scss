@@ -12,25 +12,64 @@
     background-color: $gray-table-hover;
   }
 
-  .detailButton {
-    padding: 8px;
-    background-color: $red-button;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    &:hover {
-      background-color: $red-button-hover;
-    }
-  }
-
   .cardContent {
     display: flex;
     flex-direction: row;
     gap: 10px;
+
+    .cardHeader {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 20%;
+    }
+
+    .checkboxContainer {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .checkboxContainer input {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .customCheckbox {
+      width: 20px;
+      height: 20px;
+      border: 2px solid $text-light;
+      border-radius: 4px;
+      position: relative;
+      display: inline-block;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .checkboxContainer input:checked + .customCheckbox {
+      background-color: $red-button;
+      border-color: $red-button;
+    }
+
+    .customCheckbox::after {
+      content: '';
+      position: absolute;
+      left: 5px;
+      top: 2px;
+      width: 6px;
+      height: 10px;
+      border: solid $text-light;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+      opacity: 0;
+      transition: opacity 0.2s ease-in-out;
+    }
+
+    .checkboxContainer input:checked + .customCheckbox::after {
+      opacity: 1;
+    }
 
     .cardName {
       flex: 40%;
@@ -49,30 +88,69 @@
       border-radius: 4px;
       border-style: double;
       border-color: $dark-background;
+    }
 
-      pre {
-        margin: 0;
-        white-space: pre-wrap;
-        word-wrap: break-word;
-      }
+    .detailItem {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+    }
 
-      .detailItem {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
+    .detailLabel {
+      font-weight: bold;
+      color: $text-dark;
+    }
 
-        .detailLabel {
-          font-weight: bold;
-          color: $text-dark;
-        }
+    .detailValue {
+      color: $text-light;
+      margin-left: 10px;
+    }
 
-        .detailValue {
-          color: $text-light;
-          margin-left: 10px;
-        }
+    .detailButton {
+      padding: 8px;
+      background-color: $red-button;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:hover {
+        background-color: $red-button-hover;
       }
     }
   }
+
+  &_light {
+    background-color: $light-table;
+    &:hover {
+      background-color: $light-table-hover;
+    }
+    .cardContent {
+      .checkboxContainer {
+        border: 2px solid $text-black;
+      }
+      .cardDetails {
+        background-color: $light-table-hover;
+        border-color: $light-background;
+        .detailLabel {
+          color: $text-black;
+        }
+        .detailValue {
+          color: $text-light;
+        }
+      }
+
+      .detailButton {
+        color: $text-light;
+      }
+    }
+  }
+}
+
+.checked {
+  border: 1px dashed $red-button-hover;
 }
 
 @media (max-width: 768px) {
@@ -80,16 +158,17 @@
     .cardContent {
       flex-direction: column;
 
-      .cardName {
+      .cardHeader {
+        display: column;
         flex: 100%;
-        margin-bottom: 0px;
-      }
-
-      .cardDetails {
-        flex: 100%;
-        margin-top: 0px;
-        padding: 10px;
       }
     }
+  }
+
+  .cardHeader {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
   }
 }

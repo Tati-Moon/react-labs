@@ -37,7 +37,9 @@ const Pagination: React.FC<PaginationProps> = ({
           Previous
         </button>
         <span className={styles.paginationInfo}>
-          Page {currentPage} of {totalPages}
+          <h4>
+            Page {currentPage} of {totalPages}
+          </h4>
         </span>
         <button
           className={styles.paginationButton}

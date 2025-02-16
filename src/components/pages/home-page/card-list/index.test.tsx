@@ -1,10 +1,30 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import CardList from './index';
-import Card from './card';
 import { CharacterDetails } from '../../../../interfaces/characterDetails';
 import { CharacterDetailsBuilder } from '../../../tests/utils/characterDetailsBuilder';
 
-jest.mock('./card', () => jest.fn(() => <div>Mock Card</div>));
+jest.mock(
+  '../../../../assets/icons/checkbox_false.png',
+  () => 'mocked-checkbox_false.png'
+);
+jest.mock(
+  '../../../../assets/icons/checkbox_true.png',
+  () => 'mocked-checkbox_true.png'
+);
+jest.mock(
+  '../../../../assets/icons/checkbox_minus.png',
+  () => 'mocked-checkbox_minus.png'
+);
+
+jest.mock('./card', () =>
+  jest.fn(({ isChecked, onCheckboxChange }) => (
+    <div>
+      <button onClick={onCheckboxChange}>
+        {isChecked ? 'Checked' : 'Unchecked'}
+      </button>
+    </div>
+  ))
+);
 
 jest.mock('../../../../assets/icons/load.gif', () => 'mocked-load.gif');
 
@@ -73,14 +93,12 @@ describe('CardList Component', () => {
         onItemClick={mockOnItemClick}
       />
     );
-    expect(screen.getAllByText('Mock Card')).toHaveLength(mockResults.length);
+    expect(screen.getAllByText(/Unchecked|Checked/)).toHaveLength(
+      mockResults.length
+    );
   });
 
-  test('calls onItemClick with the correct ID when a card is clicked', () => {
-    (Card as jest.Mock).mockImplementation(({ onClick }) => (
-      <button onClick={onClick}>Mock Card</button>
-    ));
-
+  test('toggles individual checkboxes', () => {
     render(
       <CardList
         results={mockResults}
@@ -89,12 +107,37 @@ describe('CardList Component', () => {
         onItemClick={mockOnItemClick}
       />
     );
-    const buttons = screen.getAllByText('Mock Card');
+    const buttons = screen.getAllByText(/Unchecked|Checked/);
 
     fireEvent.click(buttons[0]);
-    expect(mockOnItemClick).toHaveBeenCalledWith('1');
+    expect(buttons[0]).toHaveTextContent('Checked');
 
-    fireEvent.click(buttons[1]);
-    expect(mockOnItemClick).toHaveBeenCalledWith('4');
+    fireEvent.click(buttons[0]);
+    expect(buttons[0]).toHaveTextContent('Unchecked');
+  });
+
+  test('updates selected count correctly', () => {
+    render(
+      <CardList
+        results={mockResults}
+        loading={false}
+        error={null}
+        onItemClick={mockOnItemClick}
+      />
+    );
+
+    const selectAllButton = screen.getByRole('button', {
+      name: /Select All Toggle/i,
+    });
+    const checkboxes = screen.getAllByText(/Unchecked|Checked/);
+
+    fireEvent.click(checkboxes[0]);
+    expect(screen.getByText('Selected: 1')).toBeInTheDocument();
+
+    fireEvent.click(checkboxes[1]);
+    expect(screen.getByText('Selected: 2')).toBeInTheDocument();
+
+    fireEvent.click(selectAllButton);
+    expect(screen.queryByText(/Selected:/)).not.toBeInTheDocument();
   });
 });

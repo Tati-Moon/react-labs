@@ -1,0 +1,27 @@
+@use '../../../../../styles/colors.scss' as *;
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  .selectedText {
+    margin: 0;
+  }
+
+  .checkboxButton {
+    background-color: $red-button;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+
+    img {
+      height: 21px;
+      width: 21px;
+    }
+  }
+}

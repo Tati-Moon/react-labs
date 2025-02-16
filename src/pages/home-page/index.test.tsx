@@ -13,6 +13,19 @@ jest.mock('../../assets/icons/search.png', () => 'mocked-search.png');
 jest.mock('../../assets/icons/next.png', () => 'mocked-next.png');
 jest.mock('../../assets/icons/previous.png', () => 'mocked-previous.png');
 
+jest.mock(
+  '../../assets/icons/checkbox_false.png',
+  () => 'mocked-checkbox_false.png'
+);
+jest.mock(
+  '../../assets/icons/checkbox_true.png',
+  () => 'mocked-checkbox_true.png'
+);
+jest.mock(
+  '../../assets/icons/checkbox_minus.png',
+  () => 'mocked-checkbox_minus.png'
+);
+
 const mockCharacterName = 'Luke Skywalker';
 const mockCharacterName2 = 'Darth Vader';
 

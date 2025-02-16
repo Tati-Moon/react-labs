@@ -49,31 +49,45 @@ const Details: React.FC = () => {
             <h2>{details.name}</h2>
             <div className={styles.detailItem}>
               <span className={styles.detailLabel}>Height:</span>
-              <span className={styles.detailValue}>{details.height}</span>
+              <span className={styles.detailValue}>
+                <h4>{details.height}</h4>
+              </span>
             </div>
             <div className={styles.detailItem}>
               <span className={styles.detailLabel}>Mass:</span>
-              <span className={styles.detailValue}>{details.mass}</span>
+              <span className={styles.detailValue}>
+                <h4>{details.mass}</h4>
+              </span>
             </div>
             <div className={styles.detailItem}>
               <span className={styles.detailLabel}>Gender:</span>
-              <span className={styles.detailValue}>{details.gender}</span>
+              <span className={styles.detailValue}>
+                <h4>{details.gender}</h4>
+              </span>
             </div>
             <div className={styles.detailItem}>
               <span className={styles.detailLabel}>Birth Year:</span>
-              <span className={styles.detailValue}>{details.birth_year}</span>
+              <span className={styles.detailValue}>
+                <h4>{details.birth_year}</h4>
+              </span>
             </div>
             <div className={styles.detailItem}>
               <span className={styles.detailLabel}>Hair Color:</span>
-              <span className={styles.detailValue}>{details.hair_color}</span>
+              <span className={styles.detailValue}>
+                <h4>{details.hair_color}</h4>
+              </span>
             </div>
             <div className={styles.detailItem}>
               <span className={styles.detailLabel}>Skin Color:</span>
-              <span className={styles.detailValue}>{details.skin_color}</span>
+              <span className={styles.detailValue}>
+                <h4>{details.skin_color}</h4>
+              </span>
             </div>
             <div className={styles.detailItem}>
               <span className={styles.detailLabel}>Eye Color:</span>
-              <span className={styles.detailValue}>{details.eye_color}</span>
+              <span className={styles.detailValue}>
+                <h4>{details.eye_color}</h4>
+              </span>
             </div>
           </div>
         )

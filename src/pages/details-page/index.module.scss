@@ -13,6 +13,8 @@
     color: $text-light;
     cursor: pointer;
     padding: 8px 16px;
+    display: flex;
+    align-items: center;
 
     img {
       width: 12px;
@@ -26,16 +28,17 @@
   }
 
   .loading {
-    text-align: center;
+    text-align: left;
   }
 
   .detailsContent {
     h2 {
-      margin-bottom: 20px;
+      text-align: left;
     }
 
     .detailItem {
-      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
 
       .detailLabel {
         font-weight: bold;
@@ -43,8 +46,14 @@
       }
 
       .detailValue {
+        flex: 1;
         color: $text-light;
+        text-align: left;
         margin-left: 10px;
+
+        h4 {
+          margin: 5px;
+        }
       }
     }
   }
@@ -57,13 +66,19 @@
     .closeButton {
       top: 10px;
       width: 80%;
-      text-align: center;
+      text-align: left;
     }
 
     .detailsContent {
       h2 {
         padding: 5px;
         margin: 5px;
+        text-align: left;
+      }
+
+      .detailItem {
+        flex-direction: column;
+        align-items: flex-start;
       }
     }
   }

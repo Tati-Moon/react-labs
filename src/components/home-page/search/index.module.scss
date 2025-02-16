@@ -49,6 +49,13 @@
       background-color: $red-button-hover;
     }
   }
+
+  &_light {
+    .searchInput {
+      background-color: $light-input;
+      color: $text-light;
+    }
+  }
 }
 
 @media (max-width: 768px) {

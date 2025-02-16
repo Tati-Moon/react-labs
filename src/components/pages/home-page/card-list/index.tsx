@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Card from './card';
 import styles from './index.module.scss';
 import loadGif from '../../../../assets/icons/load.gif';
 import { CharacterDetails } from '../../../../interfaces/characterDetails';
-import { extractIdFromUrl } from '../../../../utils/urlUtils';
+import SelectionHeader from './header';
 
 interface CardListProps {
   results: Array<CharacterDetails>;
@@ -18,6 +18,29 @@ const CardList: React.FC<CardListProps> = ({
   error,
   onItemClick,
 }) => {
+  const [selectedItems, setSelectedItems] = useState<Record<string, boolean>>(
+    {}
+  );
+
+  const toggleCheckbox = (id: string) => {
+    setSelectedItems((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
+  const toggleSelectAll = () => {
+    const allSelected = Object.values(selectedItems).every(Boolean);
+    const newSelection = results.reduce(
+      (acc, item) => {
+        acc[item.url] = !allSelected;
+        return acc;
+      },
+      {} as Record<string, boolean>
+    );
+    setSelectedItems(newSelection);
+  };
+
   if (loading) {
     return (
       <div className={styles.loading}>
@@ -36,26 +59,28 @@ const CardList: React.FC<CardListProps> = ({
     );
   }
 
-  return (
-    <div className={styles.cardList}>
-      {results.map((item, index) => {
-        const id = extractIdFromUrl(item.url);
+  const selectedCount = Object.values(selectedItems).filter(Boolean).length;
 
-        return (
+  return (
+    <div>
+      <SelectionHeader
+        selectedCount={selectedCount}
+        totalCount={results.length}
+        onToggleSelectAll={toggleSelectAll}
+      />
+
+      <div className={styles.cardList}>
+        {results.map((item) => (
           <Card
-            key={index}
+            key={item.url}
             name={item.name}
             details={item}
-            onClick={() => {
-              if (id) {
-                onItemClick(id);
-              } else {
-                console.error('Failed to extract ID from URL:', item.url);
-              }
-            }}
+            isChecked={!!selectedItems[item.url]}
+            onCheckboxChange={() => toggleCheckbox(item.url)}
+            onClick={() => onItemClick(item.url.split('/').slice(-2)[0])}
           />
-        );
-      })}
+        ))}
+      </div>
     </div>
   );
 };

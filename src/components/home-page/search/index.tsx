@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styles from './index.module.scss';
 import searchIcon from '../../../assets/icons/search.png';
 import useLocalStorage from '../../../hooks/UseLocalStorage';
+import { ThemeContext } from '../../../context/themeContext';
+import classNames from 'classnames';
 
 interface SearchProps {
   onSearch: (term: string) => void;
@@ -9,6 +11,8 @@ interface SearchProps {
 
 const Search: React.FC<SearchProps> = ({ onSearch }) => {
   const [searchItem, setSearchItem] = useLocalStorage('searchItem', '');
+  const { theme } = useContext(ThemeContext);
+  const isLight = theme === 'light';
 
   const handleSearch = () => {
     const trimmedItem = searchItem.trim();
@@ -23,7 +27,11 @@ const Search: React.FC<SearchProps> = ({ onSearch }) => {
   };
 
   return (
-    <div className={styles.searchContainer}>
+    <div
+      className={classNames(styles.searchContainer, {
+        [styles.searchContainer_light]: isLight,
+      })}
+    >
       <input
         className={styles.searchInput}
         type="text"

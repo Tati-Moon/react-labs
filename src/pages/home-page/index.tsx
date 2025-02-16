@@ -1,6 +1,6 @@
 import styles from './index.module.scss';
 import { PEOPLE_ENDPOINT } from '../../consts/urls';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import Pagination from '../../components/home-page/pagination';
 import { ITEMS_PER_PAGE } from '../../consts/constants';
@@ -8,6 +8,9 @@ import logoIcon from '../../assets/icons/logo.png';
 import { CharacterDetails } from '../../interfaces/characterDetails';
 import Search from '../../components/home-page/search';
 import CardList from '../../components/pages/home-page/card-list';
+import ThemeToggle from '../../components/shared/themeToggle';
+import { ThemeContext } from '../../context/themeContext';
+import classNames from 'classnames';
 
 const HomePage: React.FC = () => {
   const [results, setResults] = useState<Array<CharacterDetails>>([]);
@@ -21,6 +24,9 @@ const HomePage: React.FC = () => {
   const [totalPages, setTotalPages] = useState(0);
   const navigate = useNavigate();
   const location = useLocation();
+  const { theme } = useContext(ThemeContext);
+
+  const isLight = theme === 'light';
 
   useEffect(() => {
     const fetchData = async (searchItem: string = '') => {
@@ -102,9 +108,18 @@ const HomePage: React.FC = () => {
 
   return (
     <>
-      <div className={styles.topMenu}>
+      <div
+        className={classNames(styles.topMenu, {
+          [styles.topMenu_light]: isLight,
+        })}
+      >
         <div className={styles.logo}>
           <img src={logoIcon} alt="logo" className={styles.logoIcon} />
+        </div>
+        <div className={styles.toggle}>
+          <div className={styles.themeToggle}>
+            <ThemeToggle />
+          </div>
         </div>
         <Search onSearch={handleSearch} />
       </div>
@@ -128,7 +143,7 @@ const HomePage: React.FC = () => {
         </div>
         {showDetails && (
           <div className={styles.rightSection}>
-            <Outlet context={{ handleCloseDetails }} /> {}
+            <Outlet context={{ handleCloseDetails }} />
           </div>
         )}
       </div>

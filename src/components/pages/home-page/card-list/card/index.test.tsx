@@ -4,7 +4,7 @@ import { CharacterDetailsBuilder } from '../../../../tests/utils/characterDetail
 
 describe('Card Component', () => {
   const mockOnClick = jest.fn();
-
+  const mockOnCheckboxChange = jest.fn();
   const mockCharacterName = 'Luke Skywalker';
 
   const mockCharacter = new CharacterDetailsBuilder()
@@ -27,6 +27,8 @@ describe('Card Component', () => {
       <Card
         name={mockCharacter.name}
         details={mockCharacter}
+        isChecked={false}
+        onCheckboxChange={mockOnCheckboxChange}
         onClick={mockOnClick}
       />
     );
@@ -39,6 +41,8 @@ describe('Card Component', () => {
       <Card
         name={mockCharacter.name}
         details={mockCharacter}
+        isChecked={false}
+        onCheckboxChange={mockOnCheckboxChange}
         onClick={mockOnClick}
       />
     );
@@ -58,6 +62,8 @@ describe('Card Component', () => {
       <Card
         name={mockCharacter.name}
         details={mockCharacter}
+        isChecked={false}
+        onCheckboxChange={mockOnCheckboxChange}
         onClick={mockOnClick}
       />
     );
@@ -66,5 +72,37 @@ describe('Card Component', () => {
     fireEvent.click(detailsButton);
 
     expect(mockOnClick).toHaveBeenCalledTimes(1);
+  });
+
+  test('checkbox toggles correctly', () => {
+    render(
+      <Card
+        name={mockCharacter.name}
+        details={mockCharacter}
+        isChecked={false}
+        onCheckboxChange={mockOnCheckboxChange}
+        onClick={mockOnClick}
+      />
+    );
+
+    const checkbox = screen.getByRole('checkbox');
+    expect(checkbox).not.toBeChecked();
+    fireEvent.click(checkbox);
+    expect(mockOnCheckboxChange).toHaveBeenCalledTimes(1);
+  });
+
+  test('checkbox renders as checked when isChecked is true', () => {
+    render(
+      <Card
+        name={mockCharacter.name}
+        details={mockCharacter}
+        isChecked={true}
+        onCheckboxChange={mockOnCheckboxChange}
+        onClick={mockOnClick}
+      />
+    );
+
+    const checkbox = screen.getByRole('checkbox');
+    expect(checkbox).toBeChecked();
   });
 });
