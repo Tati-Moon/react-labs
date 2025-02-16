@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 import Card from './card';
 import styles from './index.module.scss';
 import loadGif from '../../../../assets/icons/load.gif';
-import { CharacterDetails } from '../../../../interfaces/characterDetails';
-import SelectionHeader from './header';
+import { ICharacterDetail } from '../../../../models/ICharacterDetail';
+import { togglePeopleSelection } from '../../../../store/reducers/SelectedPeoplesSlice';
 
 interface CardListProps {
-  results: Array<CharacterDetails>;
+  results: Array<ICharacterDetail>;
   loading: boolean;
   error: string | null;
   onItemClick: (id: string) => void;
+  selectedPeoples: Record<string, boolean>;
 }
 
 const CardList: React.FC<CardListProps> = ({
@@ -17,34 +19,18 @@ const CardList: React.FC<CardListProps> = ({
   loading,
   error,
   onItemClick,
+  selectedPeoples,
 }) => {
-  const [selectedItems, setSelectedItems] = useState<Record<string, boolean>>(
-    {}
-  );
+  const dispatch = useDispatch();
 
-  const toggleCheckbox = (id: string) => {
-    setSelectedItems((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
-  };
-
-  const toggleSelectAll = () => {
-    const allSelected = Object.values(selectedItems).every(Boolean);
-    const newSelection = results.reduce(
-      (acc, item) => {
-        acc[item.url] = !allSelected;
-        return acc;
-      },
-      {} as Record<string, boolean>
-    );
-    setSelectedItems(newSelection);
+  const handleToggleCheckbox = (id: string) => {
+    dispatch(togglePeopleSelection(id));
   };
 
   if (loading) {
     return (
       <div className={styles.loading}>
-        <img src={loadGif} alt="Loading" className="loadGif" />
+        <img src={loadGif} alt="Loading" className={styles.loadGif} />
       </div>
     );
   }
@@ -59,24 +45,16 @@ const CardList: React.FC<CardListProps> = ({
     );
   }
 
-  const selectedCount = Object.values(selectedItems).filter(Boolean).length;
-
   return (
     <div>
-      <SelectionHeader
-        selectedCount={selectedCount}
-        totalCount={results.length}
-        onToggleSelectAll={toggleSelectAll}
-      />
-
       <div className={styles.cardList}>
         {results.map((item) => (
           <Card
             key={item.url}
             name={item.name}
             details={item}
-            isChecked={!!selectedItems[item.url]}
-            onCheckboxChange={() => toggleCheckbox(item.url)}
+            isChecked={!!selectedPeoples[item.url]}
+            onCheckboxChange={() => handleToggleCheckbox(item.url)}
             onClick={() => onItemClick(item.url.split('/').slice(-2)[0])}
           />
         ))}

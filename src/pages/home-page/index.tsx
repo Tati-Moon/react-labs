@@ -1,59 +1,45 @@
-import styles from './index.module.scss';
-import { PEOPLE_ENDPOINT } from '../../consts/urls';
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
 import Pagination from '../../components/home-page/pagination';
 import { ITEMS_PER_PAGE } from '../../consts/constants';
 import logoIcon from '../../assets/icons/logo.png';
-import { CharacterDetails } from '../../interfaces/characterDetails';
 import Search from '../../components/home-page/search';
 import CardList from '../../components/pages/home-page/card-list';
 import ThemeToggle from '../../components/shared/themeToggle';
 import { ThemeContext } from '../../context/themeContext';
 import classNames from 'classnames';
+import styles from './index.module.scss';
+import { useFetchAllPostsQuery } from '../../services/PeopleService';
+import { RootState } from '../../store/store';
+import Flyout from '../../components/home-page/flyout';
 
 const HomePage: React.FC = () => {
-  const [results, setResults] = useState<Array<CharacterDetails>>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
   const [currentPage, setCurrentPage] = useState(1);
   const [searchItem, setSearchItem] = useState(
     localStorage.getItem('searchItem') ?? ''
   );
-  const [totalPages, setTotalPages] = useState(0);
   const navigate = useNavigate();
   const location = useLocation();
   const { theme } = useContext(ThemeContext);
 
   const isLight = theme === 'light';
 
-  useEffect(() => {
-    const fetchData = async (searchItem: string = '') => {
-      setLoading(true);
-      setError(null);
+  const { data, error, isLoading } = useFetchAllPostsQuery({
+    search: searchItem,
+    page: currentPage,
+  });
 
-      try {
-        const response = await fetch(
-          `${PEOPLE_ENDPOINT}?search=${searchItem}&page=${currentPage}`
-        );
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const data = await response.json();
-        setResults(data.results);
-        setTotalPages(Math.ceil(data.count / ITEMS_PER_PAGE));
-      } catch (error) {
-        setError(`Failed to fetch data. ${error}`);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData(searchItem);
-  }, [currentPage, searchItem]);
+  const results = data?.results || [];
+  const totalPages = data ? Math.ceil(data.count / ITEMS_PER_PAGE) : 0;
+
+  const selectedPeoples = useSelector(
+    (state: RootState) => state.selectedPeoples.selected
+  );
+  const selectedCount = Object.values(selectedPeoples).filter(Boolean).length;
 
   const handleSearch = (term: string) => {
-    setTotalPages(0);
     setCurrentPage(1);
     updateUrl(1, null);
     setSearchItem(term);
@@ -129,11 +115,12 @@ const HomePage: React.FC = () => {
         <div className={styles.leftSection} onClick={handleLeftSectionClick}>
           <CardList
             results={results}
-            loading={loading}
-            error={error}
+            loading={isLoading}
+            error={error ? 'Failed to fetch data.' : null}
             onItemClick={handleItemClick}
+            selectedPeoples={selectedPeoples}
           />
-          {!loading && (
+          {!isLoading && (
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
@@ -147,6 +134,8 @@ const HomePage: React.FC = () => {
           </div>
         )}
       </div>
+
+      {selectedCount > 0 && <Flyout selectedCount={selectedCount} />}
     </>
   );
 };

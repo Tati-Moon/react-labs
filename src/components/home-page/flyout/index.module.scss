@@ -1,0 +1,46 @@
+@use '../../../styles/colors.scss' as *;
+
+.flyout {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: $dark-menu;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  text-align: center;
+
+  .flyoutContent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+
+    .flyoutButton {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      background-color: $red-button;
+      color: $text-light;
+      cursor: pointer;
+
+      img {
+        width: 12px;
+        height: 12px;
+        padding-left: 3px;
+        padding-right: 3px;
+        transition:
+          width 0.3s ease,
+          height 0.3s ease;
+      }
+
+      &:hover {
+        background-color: $red-button-hover;
+      }
+    }
+  }
+
+  &_light {
+    background-color: $light-menu;
+  }
+}

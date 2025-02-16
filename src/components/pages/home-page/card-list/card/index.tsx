@@ -1,12 +1,12 @@
 import React, { useContext } from 'react';
 import styles from './index.module.scss';
-import { CharacterDetails } from '../../../../../interfaces/characterDetails';
+import { ICharacterDetail } from '../../../../../models/ICharacterDetail';
 import { ThemeContext } from '../../../../../context/themeContext';
 import classNames from 'classnames';
 
 interface CardProps {
   name: string;
-  details: CharacterDetails;
+  details: ICharacterDetail;
   isChecked: boolean;
   onCheckboxChange: () => void;
   onClick: () => void;
@@ -20,9 +20,7 @@ const Card: React.FC<CardProps> = ({
   onClick,
 }) => {
   const themeContext = useContext(ThemeContext);
-
   const { theme } = themeContext;
-
   const isLight = theme === 'light';
 
   return (

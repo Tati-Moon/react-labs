@@ -4,9 +4,9 @@ import {
   Route,
   Routes,
   useOutletContext,
+  useParams,
 } from 'react-router-dom';
 import Details from './index';
-import { useParams } from 'react-router-dom';
 import { CharacterDetailsBuilder } from '../../components/tests/utils/characterDetailsBuilder';
 
 jest.mock('../../assets/icons/load.gif', () => 'mocked-load.gif');
@@ -139,5 +139,31 @@ describe('Details Component', () => {
     fireEvent.click(closeButton);
 
     expect(mockHandleCloseDetails).toHaveBeenCalledTimes(1);
+  });
+
+  test('handles HTTP error when response is not ok', async () => {
+    (fetch as jest.Mock).mockResolvedValueOnce({
+      ok: false,
+      status: 404,
+    });
+
+    render(
+      <MemoryRouter initialEntries={['/details/1']}>
+        <Routes>
+          <Route path="/details/:id" element={<Details />} />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.queryByAltText('Loading')).not.toBeInTheDocument();
+    });
+
+    expect(consoleErrorMock).toHaveBeenCalledWith(
+      expect.stringContaining('Failed to fetch details:'),
+      expect.any(Error)
+    );
+
+    expect(screen.queryByText(mockCharacterName)).not.toBeInTheDocument();
   });
 });

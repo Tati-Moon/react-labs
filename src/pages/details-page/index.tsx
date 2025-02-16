@@ -1,14 +1,14 @@
 import styles from './index.module.scss';
 import React, { useEffect, useState } from 'react';
 import { useParams, useOutletContext } from 'react-router-dom';
-import { CharacterDetails } from '../../interfaces/characterDetails';
+import { ICharacterDetail } from '../../models/ICharacterDetail';
 import { PEOPLE_ENDPOINT } from '../../consts/urls';
 import loadGif from '../../assets/icons/load.gif';
 import closeIcon from '../../assets/icons/close.png';
 
 const Details: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const [details, setDetails] = useState<CharacterDetails | null>(null);
+  const [details, setDetails] = useState<ICharacterDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const { handleCloseDetails } = useOutletContext<{
     handleCloseDetails: () => void;
@@ -21,7 +21,7 @@ const Details: React.FC = () => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        const data: CharacterDetails = await response.json();
+        const data: ICharacterDetail = await response.json();
         setDetails(data);
       } catch (error) {
         console.error('Failed to fetch details:', error);

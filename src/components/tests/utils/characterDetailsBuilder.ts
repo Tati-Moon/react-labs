@@ -1,7 +1,7 @@
-import { CharacterDetails } from '../../../interfaces/characterDetails';
+import { ICharacterDetail } from '../../../models/ICharacterDetail';
 
 export class CharacterDetailsBuilder {
-  private readonly details: CharacterDetails;
+  private readonly details: ICharacterDetail;
 
   constructor() {
     this.details = {
@@ -104,7 +104,7 @@ export class CharacterDetailsBuilder {
     return this;
   }
 
-  build(): CharacterDetails {
+  build(): ICharacterDetail {
     return this.details;
   }
 }
