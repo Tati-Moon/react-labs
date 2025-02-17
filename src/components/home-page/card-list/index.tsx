@@ -2,9 +2,9 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import Card from './card';
 import styles from './index.module.scss';
-import loadGif from '../../../../assets/icons/load.gif';
-import { ICharacterDetail } from '../../../../models/ICharacterDetail';
-import { togglePeopleSelection } from '../../../../store/reducers/SelectedPeoplesSlice';
+import loadGif from '../../../assets/icons/load.gif';
+import { ICharacterDetail } from '../../../models/ICharacterDetail';
+import { togglePeopleSelection } from '../../../store/reducers/SelectedPeoplesSlice';
 
 interface CardListProps {
   results: Array<ICharacterDetail>;

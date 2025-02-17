@@ -26,6 +26,8 @@ jest.mock('../../assets/icons/search.png', () => 'mocked-search.png');
 jest.mock('../../assets/icons/next.png', () => 'mocked-next.png');
 jest.mock('../../assets/icons/previous.png', () => 'mocked-previous.png');
 jest.mock('../../assets/icons/downloads.png', () => 'mocked-downloads.png');
+jest.mock('../../assets/icons/moon.png', () => 'mocked-moon.png');
+jest.mock('../../assets/icons/sun.png', () => 'mocked-sun.png');
 
 jest.mock(
   '../../assets/icons/checkbox_false.png',

@@ -2,6 +2,9 @@ import { render, fireEvent } from '@testing-library/react';
 import { ThemeContext, ThemeContextType } from '../../../context/themeContext';
 import ThemeToggle from '.';
 
+jest.mock('../../../assets/icons/moon.png', () => 'mocked-moon.png');
+jest.mock('../../../assets/icons/sun.png', () => 'mocked-sun.png');
+
 const mockThemeContext: ThemeContextType = {
   theme: 'light',
   toggleTheme: jest.fn(),
@@ -15,7 +18,7 @@ describe('ThemeToggle Component', () => {
       </ThemeContext.Provider>
     );
 
-    expect(getByText('☀️ Light')).toBeInTheDocument();
+    expect(getByText('Light')).toBeInTheDocument();
   });
 
   it('renders with dark theme when theme is dark', () => {
@@ -25,7 +28,7 @@ describe('ThemeToggle Component', () => {
       </ThemeContext.Provider>
     );
 
-    expect(getByText('🌙 Dark')).toBeInTheDocument();
+    expect(getByText('Dark')).toBeInTheDocument();
   });
 
   it('calls toggleTheme when the button is clicked', () => {
@@ -35,7 +38,7 @@ describe('ThemeToggle Component', () => {
       </ThemeContext.Provider>
     );
 
-    const button = getByText('☀️ Light');
+    const button = getByText('Light');
     fireEvent.click(button);
 
     expect(mockThemeContext.toggleTheme).toHaveBeenCalled();

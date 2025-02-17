@@ -10,7 +10,7 @@
     background-color: $red-button;
     border: none;
     border-radius: 4px;
-    color: $text-light;
+    color: $text-black;
     cursor: pointer;
     padding: 8px 16px;
     display: flex;
@@ -39,6 +39,7 @@
     .detailItem {
       display: flex;
       align-items: center;
+      margin: 10px;
 
       .detailLabel {
         font-weight: bold;
@@ -50,9 +51,25 @@
         color: $text-light;
         text-align: left;
         margin-left: 10px;
+      }
+    }
+  }
 
-        h4 {
-          margin: 5px;
+  &_light {
+    .closeButton {
+      color: $text-light;
+    }
+
+    .detailsContent {
+      color: $text-dark;
+
+      .detailItem {
+        .detailLabel {
+          color: $text-dark;
+        }
+
+        .detailValue {
+          color: $text-black;
         }
       }
     }

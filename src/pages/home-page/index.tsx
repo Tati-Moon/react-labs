@@ -6,7 +6,6 @@ import Pagination from '../../components/home-page/pagination';
 import { ITEMS_PER_PAGE } from '../../consts/constants';
 import logoIcon from '../../assets/icons/logo.png';
 import Search from '../../components/home-page/search';
-import CardList from '../../components/pages/home-page/card-list';
 import ThemeToggle from '../../components/shared/themeToggle';
 import { ThemeContext } from '../../context/themeContext';
 import classNames from 'classnames';
@@ -14,6 +13,7 @@ import styles from './index.module.scss';
 import { useFetchAllPostsQuery } from '../../services/PeopleService';
 import { RootState } from '../../store/store';
 import Flyout from '../../components/home-page/flyout';
+import CardList from '../../components/home-page/card-list';
 
 const HomePage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);

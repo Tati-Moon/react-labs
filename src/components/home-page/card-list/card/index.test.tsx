@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import Card from './index';
-import { CharacterDetailsBuilder } from '../../../../tests/utils/characterDetailsBuilder';
+import { CharacterDetailsBuilder } from '../../../tests/utils/characterDetailsBuilder';
 
 describe('Card Component', () => {
   const mockOnClick = jest.fn();

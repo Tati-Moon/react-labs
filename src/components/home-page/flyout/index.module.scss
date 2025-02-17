@@ -21,7 +21,7 @@
       border: none;
       border-radius: 4px;
       background-color: $red-button;
-      color: $text-light;
+      color: $text-black;
       cursor: pointer;
 
       img {
@@ -42,5 +42,10 @@
 
   &_light {
     background-color: $light-menu;
+    .flyoutContent {
+      .flyoutButton {
+        color: $text-light;
+      }
+    }
   }
 }

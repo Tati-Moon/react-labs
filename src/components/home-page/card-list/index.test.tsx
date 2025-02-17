@@ -2,20 +2,20 @@ import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import CardList from './index';
-import { ICharacterDetail } from '../../../../models/ICharacterDetail';
-import { CharacterDetailsBuilder } from '../../../tests/utils/characterDetailsBuilder';
+import { ICharacterDetail } from '../../../models/ICharacterDetail';
+import { CharacterDetailsBuilder } from '../../tests/utils/characterDetailsBuilder';
 
-jest.mock('../../../../assets/icons/load.gif', () => 'mocked-load.gif');
+jest.mock('../../../assets/icons/load.gif', () => 'mocked-load.gif');
 jest.mock(
-  '../../../../assets/icons/checkbox_false.png',
+  '../../../assets/icons/checkbox_false.png',
   () => 'mocked-checkbox_false.png'
 );
 jest.mock(
-  '../../../../assets/icons/checkbox_true.png',
+  '../../../assets/icons/checkbox_true.png',
   () => 'mocked-checkbox_true.png'
 );
 jest.mock(
-  '../../../../assets/icons/checkbox_minus.png',
+  '../../../assets/icons/checkbox_minus.png',
   () => 'mocked-checkbox_minus.png'
 );
 
@@ -29,7 +29,7 @@ jest.mock('./card', () =>
   ))
 );
 
-jest.mock('../../../../store/reducers/SelectedPeoplesSlice', () => ({
+jest.mock('../../../store/reducers/SelectedPeoplesSlice', () => ({
   togglePeopleSelection: jest.fn(),
 }));
 

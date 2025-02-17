@@ -29,7 +29,9 @@ const Flyout: React.FC<FlyoutProps> = ({ selectedCount }) => {
       const fetchedData = await Promise.all(
         selectedUrls.map(async (url) => {
           const response = await fetch(url);
-          if (!response.ok) throw new Error(`Request Error: ${url}`);
+          if (!response.ok) {
+            throw new Error(`Request Error: ${url}`);
+          }
           return response.json();
         })
       );

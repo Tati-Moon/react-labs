@@ -1,4 +1,4 @@
-@use '../../../../../styles/colors.scss' as *;
+@use '../../../../styles/colors.scss' as *;
 
 .cardContainer {
   border: 1px solid $gray-table;
@@ -129,7 +129,7 @@
     }
     .cardContent {
       .checkboxContainer {
-        border: 2px solid $text-black;
+        border: 2px solid $text-light;
       }
       .cardDetails {
         background-color: $light-table-hover;

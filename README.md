@@ -269,7 +269,7 @@ Link: https://github.com/rolling-scopes-school/tasks/blob/master/react/modules/t
 To implement a custom theme selection feature, the following changes were made:
 
 - **Created `ThemeProvider` and `ThemeContext`** to manage the application's theme.
-- **Added a theme selection option** them button to allow users to switch between light and dark themes.
+- **Added a theme selection option** theme button to allow users to switch between light and dark themes.
 - **Ensured the selected theme applies to the entire application** by wrapping the app with `ThemeProvider`.
 
 ### Installation of Dependencies

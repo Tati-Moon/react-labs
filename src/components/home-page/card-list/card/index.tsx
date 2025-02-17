@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import styles from './index.module.scss';
-import { ICharacterDetail } from '../../../../../models/ICharacterDetail';
-import { ThemeContext } from '../../../../../context/themeContext';
+import { ICharacterDetail } from '../../../../models/ICharacterDetail';
+import { ThemeContext } from '../../../../context/themeContext';
 import classNames from 'classnames';
 
 interface CardProps {
