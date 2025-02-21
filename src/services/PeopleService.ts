@@ -4,7 +4,7 @@ import { ICharacterDetail } from '../models/ICharacterDetail';
 
 export const peopleAPI = createApi({
   reducerPath: 'peopleAPI',
-  baseQuery: fetchBaseQuery({ baseUrl: `${API_BASE_URL}` }),
+  baseQuery: fetchBaseQuery({ baseUrl: API_BASE_URL }),
   tagTypes: ['People'],
   endpoints: (build) => ({
     fetchAllPosts: build.query<
@@ -12,14 +12,15 @@ export const peopleAPI = createApi({
       { search?: string; page?: number }
     >({
       query: ({ search = '', page = 1 }) => ({
-        url: `/people/`,
-        params: {
-          search,
-          page,
-        },
+        url: '/people/',
+        params: { search, page },
       }),
+    }),
+    fetchCharacterDetails: build.query<ICharacterDetail, string>({
+      query: (id) => `/people/${id}/`,
     }),
   }),
 });
 
-export const { useFetchAllPostsQuery } = peopleAPI;
+export const { useFetchAllPostsQuery, useFetchCharacterDetailsQuery } =
+  peopleAPI;
