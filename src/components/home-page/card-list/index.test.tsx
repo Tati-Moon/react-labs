@@ -115,6 +115,30 @@ describe('CardList Component', () => {
     );
   });
 
+  test('renders no results message when results are empty', () => {
+    render(
+      <Provider store={store}>
+        <CardList
+          results={[]}
+          loading={false}
+          error={null}
+          onItemClick={mockOnItemClick}
+          selectedPeoples={{}}
+        />
+      </Provider>
+    );
+
+    expect(
+      screen.getByText(/No results found. Please try a different search query/i)
+    ).toBeInTheDocument();
+
+    expect(
+      screen.getByText(
+        /If the issue persists, check your internet connection and refresh the page/i
+      )
+    ).toBeInTheDocument();
+  });
+
   /*
   test('toggles individual checkboxes', () => {
     render(

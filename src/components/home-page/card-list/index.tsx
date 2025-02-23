@@ -45,6 +45,17 @@ const CardList: React.FC<CardListProps> = ({
     );
   }
 
+  if (results.length === 0) {
+    return (
+      <div className={styles.error}>
+        No results found. Please try a different search query.
+        <br />
+        If the issue persists, check your internet connection and refresh the
+        page.
+      </div>
+    );
+  }
+
   return (
     <div>
       <div className={styles.cardList}>

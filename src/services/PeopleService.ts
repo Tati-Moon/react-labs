@@ -7,7 +7,7 @@ export const peopleAPI = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: API_BASE_URL }),
   tagTypes: ['People'],
   endpoints: (build) => ({
-    fetchAllPosts: build.query<
+    fetchAll: build.query<
       { results: ICharacterDetail[]; count: number },
       { search?: string; page?: number }
     >({
@@ -16,11 +16,10 @@ export const peopleAPI = createApi({
         params: { search, page },
       }),
     }),
-    fetchCharacterDetails: build.query<ICharacterDetail, string>({
+    fetchById: build.query<ICharacterDetail, string>({
       query: (id) => `/people/${id}/`,
     }),
   }),
 });
 
-export const { useFetchAllPostsQuery, useFetchCharacterDetailsQuery } =
-  peopleAPI;
+export const { useFetchAllQuery, useFetchByIdQuery } = peopleAPI;

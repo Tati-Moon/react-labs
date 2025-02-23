@@ -8,7 +8,7 @@ import {
 } from 'react-router-dom';
 import Details from './index';
 import { CharacterDetailsBuilder } from '../../components/tests/utils/characterDetailsBuilder';
-import { useFetchCharacterDetailsQuery } from '../../services/PeopleService';
+import { useFetchByIdQuery } from '../../services/PeopleService';
 
 jest.mock('../../assets/icons/load.gif', () => 'mocked-load.gif');
 jest.mock('../../assets/icons/close.png', () => 'mocked-close.png');
@@ -20,13 +20,12 @@ jest.mock('react-router-dom', () => ({
 }));
 
 jest.mock('../../services/PeopleService', () => ({
-  useFetchCharacterDetailsQuery: jest.fn(),
+  useFetchByIdQuery: jest.fn(),
 }));
 
 const mockUseParams = useParams as jest.Mock;
 const mockUseOutletContext = useOutletContext as jest.Mock;
-const mockUseFetchCharacterDetailsQuery =
-  useFetchCharacterDetailsQuery as jest.Mock;
+const mockUseFetchByIdQuery = useFetchByIdQuery as jest.Mock;
 
 const mockCharacterName = 'Luke Skywalker';
 const mockCharacter = new CharacterDetailsBuilder()
@@ -48,7 +47,7 @@ describe('Details Component', () => {
   });
 
   test('renders loading state initially', () => {
-    mockUseFetchCharacterDetailsQuery.mockReturnValue({
+    mockUseFetchByIdQuery.mockReturnValue({
       data: null,
       isLoading: true,
       error: null,
@@ -66,7 +65,7 @@ describe('Details Component', () => {
   });
 
   test('fetches and displays character details', async () => {
-    mockUseFetchCharacterDetailsQuery.mockReturnValue({
+    mockUseFetchByIdQuery.mockReturnValue({
       data: mockCharacter,
       isLoading: false,
       error: null,
@@ -92,7 +91,7 @@ describe('Details Component', () => {
   });
 
   test('displays an error message if fetch fails', async () => {
-    mockUseFetchCharacterDetailsQuery.mockReturnValue({
+    mockUseFetchByIdQuery.mockReturnValue({
       data: null,
       isLoading: false,
       error: new Error('Network error'),
@@ -115,7 +114,7 @@ describe('Details Component', () => {
 
   test('closes details when the close button is clicked', async () => {
     const mockHandleCloseDetails = jest.fn();
-    mockUseFetchCharacterDetailsQuery.mockReturnValue({
+    mockUseFetchByIdQuery.mockReturnValue({
       data: mockCharacter,
       isLoading: false,
       error: null,

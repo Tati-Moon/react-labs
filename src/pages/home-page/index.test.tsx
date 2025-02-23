@@ -3,7 +3,7 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import HomePage from './index';
 
 import { act } from 'react';
-import { useFetchAllPostsQuery } from '../../services/PeopleService';
+import { useFetchAllQuery } from '../../services/PeopleService';
 import { setupStore } from '../../store/store';
 import { ThemeContext, ThemeContextType } from '../../context/themeContext';
 import { Provider } from 'react-redux';
@@ -15,10 +15,15 @@ jest.mock('../../services/PeopleService', () => ({
     middleware: () => (next: (action: unknown) => void) => (action: unknown) =>
       next(action),
   },
-  useFetchAllPostsQuery: jest.fn(),
+  useFetchAllQuery: jest.fn(),
 }));
 
 global.fetch = jest.fn();
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: jest.fn(),
+}));
 
 jest.mock('../../assets/icons/logo.png', () => 'mocked-logoIcon.png');
 jest.mock('../../assets/icons/load.gif', () => 'mocked-load.gif');
@@ -58,16 +63,28 @@ describe('HomePage Component', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    (useFetchAllPostsQuery as jest.Mock).mockReturnValue({
+    (useFetchAllQuery as jest.Mock).mockReturnValue({
       data: { results: [], count: 0 },
       isLoading: false,
       error: null,
     });
   });
+
   const defaultThemeContext: ThemeContextType = {
     theme: 'light',
     toggleTheme: jest.fn(),
   };
+
+  const mockSkywalker = {
+    name: 'Luke Skywalker',
+    url: 'https://swapi.dev/api/people/1/',
+  };
+
+  const mockDarthVader = {
+    name: 'Darth Vader',
+    url: 'https://swapi.dev/api/people/4/',
+  };
+
   test('renders logo and search bar', async () => {
     await act(async () => {
       setup();
@@ -88,6 +105,15 @@ describe('HomePage Component', () => {
   });
 
   it('updates pagination correctly', async () => {
+    (useFetchAllQuery as jest.Mock).mockReturnValue({
+      data: {
+        results: [mockSkywalker],
+        count: 40,
+      },
+      isLoading: false,
+      error: null,
+    });
+
     render(
       <Provider store={store}>
         <ThemeContext.Provider value={defaultThemeContext}>
@@ -101,12 +127,12 @@ describe('HomePage Component', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText(/page 2/i)).toBeInTheDocument();
+      expect(screen.getByText(/Page 2/i)).toBeInTheDocument();
     });
   });
 
   it('displays loading state correctly', async () => {
-    (useFetchAllPostsQuery as jest.Mock).mockReturnValue({
+    (useFetchAllQuery as jest.Mock).mockReturnValue({
       data: null,
       isLoading: true,
       error: null,
@@ -118,7 +144,7 @@ describe('HomePage Component', () => {
   });
 
   it('displays error message when API call fails', async () => {
-    (useFetchAllPostsQuery as jest.Mock).mockReturnValue({
+    (useFetchAllQuery as jest.Mock).mockReturnValue({
       data: null,
       isLoading: false,
       error: true,
@@ -133,7 +159,71 @@ describe('HomePage Component', () => {
     ).toBeInTheDocument();
   });
 
-  it('toggles theme when theme button is clicked', async () => {
+  test('renders "No results found" when results are empty', async () => {
+    (useFetchAllQuery as jest.Mock).mockReturnValue({
+      data: { results: [], count: 0 },
+      isLoading: false,
+      error: null,
+    });
+
+    setup();
+
+    expect(
+      screen.getByText(
+        /No results found. Please try a different search query./i
+      )
+    ).toBeInTheDocument();
+  });
+
+  test('renders character cards when results are available', async () => {
+    (useFetchAllQuery as jest.Mock).mockReturnValue({
+      data: {
+        results: [mockSkywalker, mockDarthVader],
+        count: 2,
+      },
+      isLoading: false,
+      error: null,
+    });
+
+    setup();
+
+    expect(screen.getByText(/Luke Skywalker/i)).toBeInTheDocument();
+    expect(screen.getByText(/Darth Vader/i)).toBeInTheDocument();
+  });
+
+  test('renders pagination when results are available and not loading', async () => {
+    (useFetchAllQuery as jest.Mock).mockReturnValue({
+      data: {
+        results: [mockSkywalker],
+        count: 20,
+      },
+      isLoading: false,
+      error: null,
+    });
+
+    setup();
+
+    await waitFor(() => {
+      expect(screen.getByText(/Next/i)).toBeInTheDocument();
+    });
+  });
+
+  test('does not render pagination when loading', async () => {
+    (useFetchAllQuery as jest.Mock).mockReturnValue({
+      data: {
+        results: [mockSkywalker],
+        count: 20,
+      },
+      isLoading: true,
+      error: null,
+    });
+
+    setup();
+
+    expect(screen.queryByText(/Next/i)).not.toBeInTheDocument();
+  });
+
+  test('toggles theme when theme button is clicked', async () => {
     const mockToggleTheme = jest.fn();
     const mockThemeContext: ThemeContextType = {
       theme: 'dark',

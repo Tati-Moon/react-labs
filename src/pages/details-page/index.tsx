@@ -1,7 +1,7 @@
 import styles from './index.module.scss';
 import React, { useContext } from 'react';
 import { useParams, useOutletContext } from 'react-router-dom';
-import { useFetchCharacterDetailsQuery } from '../../services/PeopleService';
+import { useFetchByIdQuery } from '../../services/PeopleService';
 import loadGif from '../../assets/icons/load.gif';
 import closeIcon from '../../assets/icons/close.png';
 import { ThemeContext } from '../../context/themeContext';
@@ -12,11 +12,7 @@ const Details: React.FC = () => {
   const { handleCloseDetails } = useOutletContext<{
     handleCloseDetails: () => void;
   }>();
-  const {
-    data: details,
-    isLoading,
-    error,
-  } = useFetchCharacterDetailsQuery(id || '');
+  const { data: details, isLoading, error } = useFetchByIdQuery(id || '');
   const { theme } = useContext(ThemeContext);
   const isLight = theme === 'light';
 

@@ -10,7 +10,7 @@ import ThemeToggle from '../../components/shared/themeToggle';
 import { ThemeContext } from '../../context/themeContext';
 import classNames from 'classnames';
 import styles from './index.module.scss';
-import { useFetchAllPostsQuery } from '../../services/PeopleService';
+import { useFetchAllQuery } from '../../services/PeopleService';
 import { RootState } from '../../store/store';
 import Flyout from '../../components/home-page/flyout';
 import CardList from '../../components/home-page/card-list';
@@ -26,7 +26,7 @@ const HomePage: React.FC = () => {
 
   const isLight = theme === 'light';
 
-  const { data, error, isLoading } = useFetchAllPostsQuery({
+  const { data, error, isLoading } = useFetchAllQuery({
     search: searchItem,
     page: currentPage,
   });
@@ -120,7 +120,7 @@ const HomePage: React.FC = () => {
             onItemClick={handleItemClick}
             selectedPeoples={selectedPeoples}
           />
-          {!isLoading && (
+          {!isLoading && results.length > 0 && (
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
