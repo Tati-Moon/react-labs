@@ -4,10 +4,11 @@ import {
   Route,
   Routes,
   useOutletContext,
+  useParams,
 } from 'react-router-dom';
 import Details from './index';
-import { useParams } from 'react-router-dom';
 import { CharacterDetailsBuilder } from '../../components/tests/utils/characterDetailsBuilder';
+import { useFetchByIdQuery } from '../../services/PeopleService';
 
 jest.mock('../../assets/icons/load.gif', () => 'mocked-load.gif');
 jest.mock('../../assets/icons/close.png', () => 'mocked-close.png');
@@ -18,13 +19,15 @@ jest.mock('react-router-dom', () => ({
   useOutletContext: jest.fn(),
 }));
 
+jest.mock('../../services/PeopleService', () => ({
+  useFetchByIdQuery: jest.fn(),
+}));
+
 const mockUseParams = useParams as jest.Mock;
 const mockUseOutletContext = useOutletContext as jest.Mock;
-
-global.fetch = jest.fn();
+const mockUseFetchByIdQuery = useFetchByIdQuery as jest.Mock;
 
 const mockCharacterName = 'Luke Skywalker';
-
 const mockCharacter = new CharacterDetailsBuilder()
   .setName(mockCharacterName)
   .setHeight('172')
@@ -37,21 +40,17 @@ const mockCharacter = new CharacterDetailsBuilder()
   .build();
 
 describe('Details Component', () => {
-  let consoleErrorMock: jest.SpyInstance;
-
   beforeEach(() => {
     jest.clearAllMocks();
-    consoleErrorMock = jest
-      .spyOn(console, 'error')
-      .mockImplementation(() => {});
     mockUseParams.mockReturnValue({ id: '1' });
     mockUseOutletContext.mockReturnValue({ handleCloseDetails: jest.fn() });
   });
 
   test('renders loading state initially', () => {
-    (fetch as jest.Mock).mockResolvedValueOnce({
-      ok: true,
-      json: async () => mockCharacter,
+    mockUseFetchByIdQuery.mockReturnValue({
+      data: null,
+      isLoading: true,
+      error: null,
     });
 
     render(
@@ -66,9 +65,10 @@ describe('Details Component', () => {
   });
 
   test('fetches and displays character details', async () => {
-    (fetch as jest.Mock).mockResolvedValueOnce({
-      ok: true,
-      json: async () => mockCharacter,
+    mockUseFetchByIdQuery.mockReturnValue({
+      data: mockCharacter,
+      isLoading: false,
+      error: null,
     });
 
     render(
@@ -91,7 +91,11 @@ describe('Details Component', () => {
   });
 
   test('displays an error message if fetch fails', async () => {
-    (fetch as jest.Mock).mockRejectedValueOnce(new Error('Network error'));
+    mockUseFetchByIdQuery.mockReturnValue({
+      data: null,
+      isLoading: false,
+      error: new Error('Network error'),
+    });
 
     render(
       <MemoryRouter initialEntries={['/details/1']}>
@@ -102,23 +106,19 @@ describe('Details Component', () => {
     );
 
     await waitFor(() => {
-      expect(screen.queryByText(mockCharacterName)).not.toBeInTheDocument();
-      expect(screen.queryByAltText('Loading')).not.toBeInTheDocument();
+      expect(
+        screen.getByText('Failed to load character details.')
+      ).toBeInTheDocument();
     });
-
-    expect(consoleErrorMock).toHaveBeenCalledWith(
-      expect.stringContaining('Failed to fetch details:'),
-      expect.any(Error)
-    );
   });
 
   test('closes details when the close button is clicked', async () => {
     const mockHandleCloseDetails = jest.fn();
-    (fetch as jest.Mock).mockResolvedValueOnce({
-      ok: true,
-      json: async () => mockCharacter,
+    mockUseFetchByIdQuery.mockReturnValue({
+      data: mockCharacter,
+      isLoading: false,
+      error: null,
     });
-
     mockUseOutletContext.mockReturnValue({
       handleCloseDetails: mockHandleCloseDetails,
     });

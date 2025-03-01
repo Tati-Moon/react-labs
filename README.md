@@ -233,4 +233,86 @@ Link: https://github.com/rolling-scopes-school/tasks/blob/master/react/modules/t
 - Included only .tsx files in coverage.
 - Integrated React Testing Library for component testing.
 
+### Installation of Dependencies
+
+To set up routing, the following library was installed:
+
+```bash
+npm install react-router-dom
+```
+
+The following packages were installed for testing:
+
+```bash
+npm install --save-dev jest @testing-library/react @testing-library/jest-dom ts-jest jest-environment-jsdom identity-obj-proxy
+```
+
+## Branching and Development Workflow
+
+All changes were implemented in a dedicated branch:
+
+```bash
+git checkout -b hooks-and-routing
+```
+
+</details>
+
+<details>
+<summary>
+## TASK 3: Redux. Redux Toolkit, RTK Query. Context api.
+</summary>
+
+Link: https://github.com/rolling-scopes-school/tasks/blob/master/react/modules/tasks/redux.md
+
+## Theme Management (Context API)
+
+To implement a custom theme selection feature, the following changes were made:
+
+- **Created `ThemeProvider` and `ThemeContext`** to manage the application's theme.
+- **Added a theme selection option** theme button to allow users to switch between light and dark themes.
+- **Ensured the selected theme applies to the entire application** by wrapping the app with `ThemeProvider`.
+
+### Installation of Dependencies
+
+To support dynamic theming, Redux state management, and API requests, the following libraries were installed:
+
+```bash
+npm install classnames
+npm install @reduxjs/toolkit axios react-redux
+```
+
+### Purpose of Installed Packages
+
+- **`classnames`** – Used for conditionally applying CSS class names based on the selected theme.
+- **`@reduxjs/toolkit`** – Integrated Redux into the application, including setting up the store and reducers.
+- **`axios`** – Used for making API requests to fetch data.
+- **`react-redux`** – Provided React bindings for Redux to connect components with the store.
+
+## Redux State Management
+
+To implement item selection and management using Redux, the following changes were made:
+
+- **Each item in the dashboard now has a checkbox** to allow selection.
+- **Selected items are stored in the Redux store**, ensuring persistence across page navigations.
+- **Unselecting an item removes it from the store** dynamically.
+- **A flyout panel appears when at least one item is selected**, displaying the total number of selected items and providing two actions:
+  - **"Unselect all"** – Clears all selections and hides the flyout.
+  - **"Download"** – Exports the list of selected items to a `.csv` file.
+
+## RTK Query Integration
+
+RTK Query was implemented to optimize API interactions:
+
+- **Replaced direct API calls with RTK Query**, improving caching and reducing redundant requests.
+- **Implemented a loading state in the store**, ensuring smooth UI updates without prop-drilling.
+- **Stored API responses in Redux**, maintaining the current page’s data.
+
+## Branching and Development Workflow
+
+All changes were implemented in a dedicated branch:
+
+```bash
+git checkout -b app-state-management
+```
+
 </details>

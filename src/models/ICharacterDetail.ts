@@ -1,4 +1,4 @@
-export interface CharacterDetails {
+export interface ICharacterDetail {
   name: string;
   height: string;
   mass: string;

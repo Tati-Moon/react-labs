@@ -1,0 +1,40 @@
+@use '../../../styles/colors.scss' as *;
+
+.toggle {
+  gap: 8px;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 8px;
+  font-weight: bold;
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease;
+  white-space: nowrap;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  .buttonIcon {
+    width: 10px;
+    height: 10px;
+    margin-right: 5px;
+  }
+
+  background-color: $red-button-hover;
+  color: $text-black;
+
+  &:hover {
+    background-color: $red-button;
+  }
+
+  &_light {
+    background-color: $red-button;
+    color: $text-light;
+
+    &:hover {
+      background-color: $red-button-hover;
+    }
+  }
+}

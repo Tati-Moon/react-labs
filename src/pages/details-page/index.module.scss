@@ -10,9 +10,11 @@
     background-color: $red-button;
     border: none;
     border-radius: 4px;
-    color: $text-light;
+    color: $text-black;
     cursor: pointer;
     padding: 8px 16px;
+    display: flex;
+    align-items: center;
 
     img {
       width: 12px;
@@ -25,17 +27,23 @@
     }
   }
 
+  .error {
+    color: $red-button;
+  }
+
   .loading {
-    text-align: center;
+    text-align: left;
   }
 
   .detailsContent {
     h2 {
-      margin-bottom: 20px;
+      text-align: left;
     }
 
     .detailItem {
-      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      margin: 10px;
 
       .detailLabel {
         font-weight: bold;
@@ -43,8 +51,30 @@
       }
 
       .detailValue {
+        flex: 1;
         color: $text-light;
+        text-align: left;
         margin-left: 10px;
+      }
+    }
+  }
+
+  &_light {
+    .closeButton {
+      color: $text-light;
+    }
+
+    .detailsContent {
+      color: $text-dark;
+
+      .detailItem {
+        .detailLabel {
+          color: $text-dark;
+        }
+
+        .detailValue {
+          color: $text-black;
+        }
       }
     }
   }
@@ -57,13 +87,19 @@
     .closeButton {
       top: 10px;
       width: 80%;
-      text-align: center;
+      text-align: left;
     }
 
     .detailsContent {
       h2 {
         padding: 5px;
         margin: 5px;
+        text-align: left;
+      }
+
+      .detailItem {
+        flex-direction: column;
+        align-items: flex-start;
       }
     }
   }

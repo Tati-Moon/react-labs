@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styles from './index.module.scss';
 import nextIcon from '../../../assets/icons/next.png';
 import previousIcon from '../../../assets/icons/previous.png';
+import { ThemeContext } from '../../../context/themeContext';
+import classNames from 'classnames';
 
 interface PaginationProps {
   currentPage: number;
@@ -21,8 +23,16 @@ const Pagination: React.FC<PaginationProps> = ({
     event.stopPropagation();
     onPageChange(page);
   };
+
+  const { theme } = useContext(ThemeContext);
+  const isLight = theme === 'light';
+
   return (
-    <div className={styles.paginationContainer}>
+    <div
+      className={classNames(styles.paginationContainer, {
+        [styles.paginationContainer_light]: isLight,
+      })}
+    >
       <div className={styles.paginationControls}>
         <button
           className={styles.paginationButton}
@@ -37,7 +47,9 @@ const Pagination: React.FC<PaginationProps> = ({
           Previous
         </button>
         <span className={styles.paginationInfo}>
-          Page {currentPage} of {totalPages}
+          <h4>
+            Page {currentPage} of {totalPages}
+          </h4>
         </span>
         <button
           className={styles.paginationButton}

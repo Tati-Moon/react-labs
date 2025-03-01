@@ -1,53 +1,45 @@
-import styles from './index.module.scss';
-import { PEOPLE_ENDPOINT } from '../../consts/urls';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
 import Pagination from '../../components/home-page/pagination';
 import { ITEMS_PER_PAGE } from '../../consts/constants';
 import logoIcon from '../../assets/icons/logo.png';
-import { CharacterDetails } from '../../interfaces/characterDetails';
 import Search from '../../components/home-page/search';
-import CardList from '../../components/pages/home-page/card-list';
+import ThemeToggle from '../../components/shared/themeToggle';
+import { ThemeContext } from '../../context/themeContext';
+import classNames from 'classnames';
+import styles from './index.module.scss';
+import { useFetchAllQuery } from '../../services/PeopleService';
+import { RootState } from '../../store/store';
+import Flyout from '../../components/home-page/flyout';
+import CardList from '../../components/home-page/card-list';
 
 const HomePage: React.FC = () => {
-  const [results, setResults] = useState<Array<CharacterDetails>>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
   const [currentPage, setCurrentPage] = useState(1);
   const [searchItem, setSearchItem] = useState(
     localStorage.getItem('searchItem') ?? ''
   );
-  const [totalPages, setTotalPages] = useState(0);
   const navigate = useNavigate();
   const location = useLocation();
+  const { theme } = useContext(ThemeContext);
 
-  useEffect(() => {
-    const fetchData = async (searchItem: string = '') => {
-      setLoading(true);
-      setError(null);
+  const isLight = theme === 'light';
 
-      try {
-        const response = await fetch(
-          `${PEOPLE_ENDPOINT}?search=${searchItem}&page=${currentPage}`
-        );
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const data = await response.json();
-        setResults(data.results);
-        setTotalPages(Math.ceil(data.count / ITEMS_PER_PAGE));
-      } catch (error) {
-        setError(`Failed to fetch data. ${error}`);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData(searchItem);
-  }, [currentPage, searchItem]);
+  const { data, error, isLoading } = useFetchAllQuery({
+    search: searchItem,
+    page: currentPage,
+  });
+
+  const results = data?.results || [];
+  const totalPages = data ? Math.ceil(data.count / ITEMS_PER_PAGE) : 0;
+
+  const selectedPeoples = useSelector(
+    (state: RootState) => state.selectedPeoples.selected
+  );
+  const selectedCount = Object.values(selectedPeoples).filter(Boolean).length;
 
   const handleSearch = (term: string) => {
-    setTotalPages(0);
     setCurrentPage(1);
     updateUrl(1, null);
     setSearchItem(term);
@@ -102,9 +94,18 @@ const HomePage: React.FC = () => {
 
   return (
     <>
-      <div className={styles.topMenu}>
+      <div
+        className={classNames(styles.topMenu, {
+          [styles.topMenu_light]: isLight,
+        })}
+      >
         <div className={styles.logo}>
           <img src={logoIcon} alt="logo" className={styles.logoIcon} />
+        </div>
+        <div className={styles.toggle}>
+          <div className={styles.themeToggle}>
+            <ThemeToggle />
+          </div>
         </div>
         <Search onSearch={handleSearch} />
       </div>
@@ -114,11 +115,12 @@ const HomePage: React.FC = () => {
         <div className={styles.leftSection} onClick={handleLeftSectionClick}>
           <CardList
             results={results}
-            loading={loading}
-            error={error}
+            loading={isLoading}
+            error={error ? 'Failed to fetch data.' : null}
             onItemClick={handleItemClick}
+            selectedPeoples={selectedPeoples}
           />
-          {!loading && (
+          {!isLoading && results.length > 0 && (
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
@@ -128,10 +130,12 @@ const HomePage: React.FC = () => {
         </div>
         {showDetails && (
           <div className={styles.rightSection}>
-            <Outlet context={{ handleCloseDetails }} /> {}
+            <Outlet context={{ handleCloseDetails }} />
           </div>
         )}
       </div>
+
+      {selectedCount > 0 && <Flyout selectedCount={selectedCount} />}
     </>
   );
 };

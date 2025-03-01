@@ -1,48 +1,36 @@
 import styles from './index.module.scss';
-import React, { useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { useParams, useOutletContext } from 'react-router-dom';
-import { CharacterDetails } from '../../interfaces/characterDetails';
-import { PEOPLE_ENDPOINT } from '../../consts/urls';
+import { useFetchByIdQuery } from '../../services/PeopleService';
 import loadGif from '../../assets/icons/load.gif';
 import closeIcon from '../../assets/icons/close.png';
+import { ThemeContext } from '../../context/themeContext';
+import classNames from 'classnames';
 
 const Details: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const [details, setDetails] = useState<CharacterDetails | null>(null);
-  const [loading, setLoading] = useState(true);
   const { handleCloseDetails } = useOutletContext<{
     handleCloseDetails: () => void;
   }>();
-
-  useEffect(() => {
-    const fetchDetails = async () => {
-      try {
-        const response = await fetch(`${PEOPLE_ENDPOINT}/${id}/`);
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const data: CharacterDetails = await response.json();
-        setDetails(data);
-      } catch (error) {
-        console.error('Failed to fetch details:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchDetails();
-  }, [id]);
+  const { data: details, isLoading, error } = useFetchByIdQuery(id || '');
+  const { theme } = useContext(ThemeContext);
+  const isLight = theme === 'light';
 
   return (
-    <div className={styles.detailsSection}>
+    <div
+      className={classNames(styles.detailsSection, {
+        [styles.detailsSection_light]: isLight,
+      })}
+    >
       <button onClick={handleCloseDetails} className={styles.closeButton}>
-        <img src={closeIcon} alt="close" className={styles.closeIcon} />
-        Close
+        <img src={closeIcon} alt="close" className={styles.closeIcon} /> Close
       </button>
-      {loading ? (
+      {isLoading ? (
         <div className={styles.loading}>
           <img src={loadGif} alt="Loading" className={styles.loadGif} />
         </div>
+      ) : error ? (
+        <div className={styles.error}>Failed to load character details.</div>
       ) : (
         details && (
           <div className={styles.detailsContent}>
