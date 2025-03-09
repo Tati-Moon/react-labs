@@ -1,46 +1,34 @@
 import { render, screen } from '@testing-library/react';
-import { BrowserRouter as Router } from 'react-router-dom';
-import NotFound from '.';
+import NotFound from '../404';
+import '@testing-library/jest-dom';
 
-jest.mock('../../assets/icons/404.png', () => 'mocked-404.png');
+describe('NotFound Component', () => {
+  it('renders the 404 message', () => {
+    render(<NotFound />);
 
-describe('NotFound component', () => {
-  const renderNotFound = () => {
-    render(
-      <Router>
-        <NotFound />
-      </Router>
-    );
-  };
+    expect(screen.getByText('404 - Page Not Found')).toBeInTheDocument();
 
-  test('renders 404 page with correct text', () => {
-    renderNotFound();
-
-    expect(screen.getByText(/404 - Page Not Found/i)).toBeInTheDocument();
     expect(
-      screen.getByText(/The page you are looking for does not exist./i)
+      screen.getByText('The page you are looking for does not exist.')
     ).toBeInTheDocument();
+
     expect(
-      screen.getByText(
-        /You will be automatically redirected to the home page./i
-      )
+      screen.getByText('You will be automatically redirected to the home page.')
     ).toBeInTheDocument();
   });
 
-  test('renders image with 404 class', () => {
-    renderNotFound();
+  it('renders the 404 image', () => {
+    render(<NotFound />);
 
-    const image = screen.getByAltText('404') as HTMLImageElement;
+    const image = screen.getByAltText('404');
     expect(image).toBeInTheDocument();
-    expect(image).toHaveClass('pageNotFoundImage');
-    expect(image.src).toContain('mocked-404.png');
   });
 
-  test('renders "Go to Home" link', () => {
-    renderNotFound();
+  it('renders the "Go to Home" link', () => {
+    render(<NotFound />);
 
-    const link = screen.getByText(/Go to Home/i);
+    const link = screen.getByRole('link', { name: /go to home/i });
     expect(link).toBeInTheDocument();
-    expect(link).toHaveAttribute('href', '/');
+    expect(link).toHaveAttribute('href', '/home');
   });
 });

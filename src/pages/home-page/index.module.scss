@@ -27,8 +27,9 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 
   .logo {
-    img {
+    .logoIcon {
       height: 30px;
+      width: 30px;
       transition:
         color 0.3s ease,
         transform 0.3s ease;
@@ -82,18 +83,10 @@
     width: 100%;
     margin-top: 10px;
   }
-
-  h1 {
-    font-size: 24px;
-  }
 }
 
 @media (max-width: 480px) {
   .topMenu {
     padding: 10px;
-  }
-
-  h1 {
-    font-size: 20px;
   }
 }

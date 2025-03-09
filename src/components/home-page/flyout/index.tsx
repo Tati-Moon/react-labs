@@ -1,8 +1,8 @@
+import Image from 'next/image';
 import React, { useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './index.module.scss';
 import classNames from 'classnames';
-import downloadsIcon from '../../../assets/icons/downloads.png';
 import { RootState } from '../../../store/store';
 import { clearSelections } from '../../../store/reducers/SelectedPeoplesSlice';
 import { ThemeContext } from '../../../context/themeContext';
@@ -69,9 +69,12 @@ const Flyout: React.FC<FlyoutProps> = ({ selectedCount }) => {
           Unselect all
         </button>
         <button onClick={handleDownload} className={styles.flyoutButton}>
-          <img
-            src={downloadsIcon}
-            alt="previous"
+          <Image
+            src="/icons/downloads.png"
+            width="12"
+            height="12"
+            alt="downloads"
+            priority
             className={styles.downloadsIcon}
           />
           Download

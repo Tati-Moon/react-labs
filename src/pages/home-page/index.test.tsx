@@ -1,241 +1,154 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import HomePage from './index';
-
-import { act } from 'react';
-import { useFetchAllQuery } from '../../services/PeopleService';
-import { setupStore } from '../../store/store';
-import { ThemeContext, ThemeContextType } from '../../context/themeContext';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { useRouter } from 'next/navigation';
+import Details from '../../components/home-page/details';
+import { CharacterDetailsBuilder } from '../../components/tests/utils/characterDetailsBuilder';
 import { Provider } from 'react-redux';
+import { createStore } from '@reduxjs/toolkit';
+import { useFetchByIdQuery } from '../../services/PeopleService';
 
-jest.mock('../../services/PeopleService', () => ({
-  peopleAPI: {
-    reducerPath: 'peopleAPI',
-    reducer: () => ({}),
-    middleware: () => (next: (action: unknown) => void) => (action: unknown) =>
-      next(action),
-  },
-  useFetchAllQuery: jest.fn(),
+jest.mock('next/navigation', () => ({
+  useSearchParams: jest.fn(() => new URLSearchParams('?id=123')),
+  useRouter: jest.fn(() => ({ push: jest.fn() })),
+  usePathname: jest.fn(() => '/home'),
 }));
+jest.mock('../../services/PeopleService', () => ({
+  useFetchByIdQuery: jest.fn(),
+}));
+const mockUseFetchByIdQuery = useFetchByIdQuery as jest.Mock;
 
 global.fetch = jest.fn();
+const mockReducer = (state = {}) => state;
+const store = createStore(mockReducer);
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useNavigate: jest.fn(),
-}));
+const mockUseRouter = useRouter as jest.Mock;
+const mockCharacterName = 'Luke Skywalker';
+const mockCharacter = new CharacterDetailsBuilder()
+  .setName(mockCharacterName)
+  .setHeight('172')
+  .setMass('77')
+  .setGender('male')
+  .setBirthYear('19BBY')
+  .setHairColor('blond')
+  .setSkinColor('fair')
+  .setEyeColor('blue')
+  .build();
 
-jest.mock('../../assets/icons/logo.png', () => 'mocked-logoIcon.png');
-jest.mock('../../assets/icons/load.gif', () => 'mocked-load.gif');
-jest.mock('../../assets/icons/search.png', () => 'mocked-search.png');
-jest.mock('../../assets/icons/next.png', () => 'mocked-next.png');
-jest.mock('../../assets/icons/previous.png', () => 'mocked-previous.png');
-jest.mock('../../assets/icons/downloads.png', () => 'mocked-downloads.png');
-jest.mock('../../assets/icons/moon.png', () => 'mocked-moon.png');
-jest.mock('../../assets/icons/sun.png', () => 'mocked-sun.png');
-
-jest.mock(
-  '../../assets/icons/checkbox_false.png',
-  () => 'mocked-checkbox_false.png'
-);
-jest.mock(
-  '../../assets/icons/checkbox_true.png',
-  () => 'mocked-checkbox_true.png'
-);
-jest.mock(
-  '../../assets/icons/checkbox_minus.png',
-  () => 'mocked-checkbox_minus.png'
-);
-
-describe('HomePage Component', () => {
-  const store = setupStore();
-
-  const setup = ({ mockThemeContext = defaultThemeContext } = {}) =>
-    render(
-      <Provider store={store}>
-        <ThemeContext.Provider value={mockThemeContext}>
-          <MemoryRouter>
-            <HomePage />
-          </MemoryRouter>
-        </ThemeContext.Provider>
-      </Provider>
-    );
+describe('Details Component', () => {
+  let consoleErrorMock: jest.SpyInstance;
 
   beforeEach(() => {
     jest.clearAllMocks();
-    (useFetchAllQuery as jest.Mock).mockReturnValue({
-      data: { results: [], count: 0 },
-      isLoading: false,
-      error: null,
-    });
+    consoleErrorMock = jest
+      .spyOn(console, 'error')
+      .mockImplementation(() => {});
+    mockUseRouter.mockReturnValue({ query: { id: '1' }, push: jest.fn() });
   });
 
-  const defaultThemeContext: ThemeContextType = {
-    theme: 'light',
-    toggleTheme: jest.fn(),
-  };
-
-  const mockSkywalker = {
-    name: 'Luke Skywalker',
-    url: 'https://swapi.dev/api/people/1/',
-  };
-
-  const mockDarthVader = {
-    name: 'Darth Vader',
-    url: 'https://swapi.dev/api/people/4/',
-  };
-
-  test('renders logo and search bar', async () => {
-    await act(async () => {
-      setup();
-    });
-    expect(screen.getByAltText('logo')).toBeInTheDocument();
-    expect(screen.getByText('Search')).toBeInTheDocument();
+  afterEach(() => {
+    consoleErrorMock.mockRestore();
   });
 
-  it('handles search input correctly', async () => {
-    setup();
-
-    const searchInput = screen.getByRole('textbox');
-    fireEvent.change(searchInput, { target: { value: 'Luke' } });
-
-    await waitFor(() => {
-      expect(localStorage.getItem('searchItem')).toBe('Luke');
+  test('renders loading state initially', () => {
+    (fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: async () => mockCharacter,
     });
-  });
 
-  it('updates pagination correctly', async () => {
-    (useFetchAllQuery as jest.Mock).mockReturnValue({
-      data: {
-        results: [mockSkywalker],
-        count: 40,
-      },
+    mockUseFetchByIdQuery.mockReturnValue({
+      data: mockCharacter,
       isLoading: false,
       error: null,
     });
 
     render(
       <Provider store={store}>
-        <ThemeContext.Provider value={defaultThemeContext}>
-          <MemoryRouter initialEntries={['/home?frontpage=2']}>
-            <Routes>
-              <Route path="/home" element={<HomePage />} />
-            </Routes>
-          </MemoryRouter>
-        </ThemeContext.Provider>
+        <Details />
       </Provider>
     );
-
-    await waitFor(() => {
-      expect(screen.getByText(/Page 2/i)).toBeInTheDocument();
-    });
-  });
-
-  it('displays loading state correctly', async () => {
-    (useFetchAllQuery as jest.Mock).mockReturnValue({
-      data: null,
-      isLoading: true,
-      error: null,
-    });
-
-    setup();
-
     expect(screen.getByAltText('Loading')).toBeInTheDocument();
   });
 
-  it('displays error message when API call fails', async () => {
-    (useFetchAllQuery as jest.Mock).mockReturnValue({
-      data: null,
-      isLoading: false,
-      error: true,
+  test('fetches and displays character details', async () => {
+    (fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: async () => mockCharacter,
     });
 
-    setup();
+    render(
+      <Provider store={store}>
+        <Details />
+      </Provider>
+    );
+
+    expect(await screen.findByText(mockCharacterName)).toBeInTheDocument();
+    expect(screen.getByText('Height:')).toBeInTheDocument();
+    expect(screen.getByText('172')).toBeInTheDocument();
+    expect(screen.getByText('Mass:')).toBeInTheDocument();
+    expect(screen.getByText('77')).toBeInTheDocument();
+    expect(screen.getByText('Gender:')).toBeInTheDocument();
+    expect(screen.getByText('male')).toBeInTheDocument();
+  });
+
+  test('displays an error message if fetch fails', async () => {
+    (fetch as jest.Mock).mockRejectedValueOnce(new Error('Network error'));
+
+    render(
+      <Provider store={store}>
+        <Details />
+      </Provider>
+    );
 
     expect(
-      await screen.findByText(
-        /Oops! Something went wrong. Please check your internet connection./i
-      )
+      await screen.findByText(/Failed to fetch details/i)
     ).toBeInTheDocument();
+    expect(consoleErrorMock).toHaveBeenCalledWith(
+      expect.stringContaining('Failed to fetch details:'),
+      expect.any(Error)
+    );
   });
 
-  test('renders "No results found" when results are empty', async () => {
-    (useFetchAllQuery as jest.Mock).mockReturnValue({
-      data: { results: [], count: 0 },
-      isLoading: false,
-      error: null,
+  test('closes details when the close button is clicked', async () => {
+    const mockPush = jest.fn();
+    mockUseRouter.mockReturnValue({ query: { id: '1' }, push: mockPush });
+
+    (fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: async () => mockCharacter,
     });
 
-    setup();
+    render(
+      <Provider store={store}>
+        <Details />
+      </Provider>
+    );
+
+    expect(await screen.findByText(mockCharacterName)).toBeInTheDocument();
+
+    const closeButton = screen.getByText('Close');
+    fireEvent.click(closeButton);
+
+    expect(mockPush).toHaveBeenCalledWith('/home');
+  });
+
+  test('handles HTTP error when response is not ok', async () => {
+    (fetch as jest.Mock).mockResolvedValueOnce({
+      ok: false,
+      status: 404,
+      json: async () => ({ message: 'Not found' }),
+    });
+
+    render(
+      <Provider store={store}>
+        <Details />
+      </Provider>
+    );
 
     expect(
-      screen.getByText(
-        /No results found. Please try a different search query./i
-      )
+      await screen.findByText(/Failed to fetch details/i)
     ).toBeInTheDocument();
-  });
-
-  test('renders character cards when results are available', async () => {
-    (useFetchAllQuery as jest.Mock).mockReturnValue({
-      data: {
-        results: [mockSkywalker, mockDarthVader],
-        count: 2,
-      },
-      isLoading: false,
-      error: null,
-    });
-
-    setup();
-
-    expect(screen.getByText(/Luke Skywalker/i)).toBeInTheDocument();
-    expect(screen.getByText(/Darth Vader/i)).toBeInTheDocument();
-  });
-
-  test('renders pagination when results are available and not loading', async () => {
-    (useFetchAllQuery as jest.Mock).mockReturnValue({
-      data: {
-        results: [mockSkywalker],
-        count: 20,
-      },
-      isLoading: false,
-      error: null,
-    });
-
-    setup();
-
-    await waitFor(() => {
-      expect(screen.getByText(/Next/i)).toBeInTheDocument();
-    });
-  });
-
-  test('does not render pagination when loading', async () => {
-    (useFetchAllQuery as jest.Mock).mockReturnValue({
-      data: {
-        results: [mockSkywalker],
-        count: 20,
-      },
-      isLoading: true,
-      error: null,
-    });
-
-    setup();
-
-    expect(screen.queryByText(/Next/i)).not.toBeInTheDocument();
-  });
-
-  test('toggles theme when theme button is clicked', async () => {
-    const mockToggleTheme = jest.fn();
-    const mockThemeContext: ThemeContextType = {
-      theme: 'dark',
-      toggleTheme: mockToggleTheme,
-    };
-
-    setup({ mockThemeContext });
-
-    const toggleButton = screen.getByRole('button', { name: /dark/i });
-
-    fireEvent.click(toggleButton);
-
-    expect(mockToggleTheme).toHaveBeenCalledTimes(1);
+    expect(consoleErrorMock).toHaveBeenCalledWith(
+      expect.stringContaining('Failed to fetch details:'),
+      expect.any(Error)
+    );
   });
 });

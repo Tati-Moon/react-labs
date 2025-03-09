@@ -12,11 +12,6 @@ jest.mock('react-redux', () => ({
   useSelector: jest.fn(),
 }));
 
-jest.mock(
-  '../../../assets/icons/downloads.png',
-  () => 'mocked-downloadsIcon.png'
-);
-
 describe('Flyout Component', () => {
   const store = setupStore();
   const mockDispatch = jest.fn();
