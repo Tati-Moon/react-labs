@@ -316,3 +316,272 @@ git checkout -b app-state-management
 ```
 
 </details>
+
+<details>
+<summary>
+## TASK 4: Next.js. Server Side Rendering
+</summary>
+
+Task: https://github.com/rolling-scopes-school/tasks/blob/master/react/modules/tasks/nextjs-ssr-ssg.md
+
+Doc: https://nextjs.org/docs/app/building-your-application/upgrading/from-vite
+
+## Why Switch?
+
+There are several reasons why you might want to switch from Vite to Next.js:
+
+### Data Fetching Strategy
+
+With Next.js, you can choose your data fetching strategy per page or component. You can fetch data at build time, on the server at request time, or on the client. For example, you can fetch CMS data and render blog posts at build time, which will be efficiently cached on a CDN.
+
+### Middleware
+
+Next.js Middleware allows you to run code on the server before a request is completed. This can be helpful for features like user authentication or internationalization.
+
+### Built-in Optimizations
+
+Next.js comes with built-in optimizations for images, fonts, and third-party scripts, helping improve application performance.
+
+---
+
+## Migration Steps
+
+The goal of this migration is to transition your app to Next.js as smoothly as possible, starting with a purely client-side application (SPA). We'll also avoid migrating your existing router initially to minimize issues and reduce merge conflicts.
+
+### Step 1: Install the Next.js Dependency
+
+First, install Next.js as a dependency:
+
+```bash
+npm install next@latest
+```
+
+### Step 2: Create the Next.js Configuration File
+
+Create a `next.config.mjs` file at the root of your project:
+
+```javascript
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  output: 'export', // Outputs a Single-Page Application (SPA).
+  distDir: './dist', // Changes the build output directory to `./dist/`.
+};
+
+export default nextConfig;
+```
+
+### Step 3: Update TypeScript Configuration
+
+If you're using TypeScript, update your `tsconfig.json` file with the following changes to make it compatible with Next.js. If not, you can skip this step.
+
+- Remove the project reference to `tsconfig.node.json`
+- Add `./dist/types/**/*.ts` and `./next-env.d.ts` to the `include` array
+- Add `./node_modules` to the `exclude` array
+- Add `{ "name": "next" }` to the `plugins` array
+- Set `esModuleInterop` to `true`
+- Set `jsx` to `preserve`
+- Set `allowJs` to `true`
+- Set `forceConsistentCasingInFileNames` to `true`
+- Set `incremental` to `true`
+
+Example `tsconfig.json`:
+
+```json
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "preserve",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "allowJs": true,
+    "forceConsistentCasingInFileNames": true,
+    "incremental": true,
+    "plugins": [{ "name": "next" }]
+  },
+  "include": ["./src", "./dist/types/**/*.ts", "./next-env.d.ts"],
+  "exclude": ["./node_modules"]
+}
+```
+
+### Step 4: Create the Root Layout
+
+Next.js requires a root layout file, which is a React Server Component that wraps all pages. This is similar to `index.html` in Vite.
+
+Create the following files:
+
+1. **`src/app/layout.tsx`**:
+
+```tsx
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en">
+      <head>
+        <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+        <title>My App</title>
+        <meta name="description" content="My App is a..." />
+      </head>
+      <body>
+        <div id="root">{children}</div>
+      </body>
+    </html>
+  );
+}
+```
+
+2. Move relevant metadata files (e.g., favicon, robots.txt) into the `app` directory and remove `<link>` tags.
+
+3. Use the `Metadata` API for managing head content:
+
+```tsx
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'My App',
+  description: 'My App is a...',
+};
+```
+
+### Step 5: Create the Entrypoint Page
+
+In Next.js, the entrypoint is a page declared via `page.tsx`. We will configure a catch-all route.
+
+1. Create a directory `app/[[...slug]]/` and inside it, create `page.tsx`:
+
+```tsx
+import '../../index.css';
+
+export function generateStaticParams() {
+  return [{ slug: [''] }];
+}
+
+export default function Page() {
+  return '...';
+}
+```
+
+2. Create a `client.tsx` for running the Vite application in Next.js as a client-side app:
+
+```tsx
+'use client';
+
+import dynamic from 'next/dynamic';
+
+const App = dynamic(() => import('../../App'), { ssr: false });
+
+export function ClientOnly() {
+  return <App />;
+}
+```
+
+3. Update `page.tsx` to render the client-only component:
+
+```tsx
+import '../../index.css';
+import { ClientOnly } from './client';
+
+export function generateStaticParams() {
+  return [{ slug: [''] }];
+}
+
+export default function Page() {
+  return <ClientOnly />;
+}
+```
+
+### Step 6: Update Static Image Imports
+
+Next.js handles static images differently from Vite. Update your image imports:
+
+1. **Before**:
+
+```tsx
+import image from './img.png';
+```
+
+2. **After**:
+
+```tsx
+import image from '../public/img.png';
+
+<img src={image.src} />;
+```
+
+### Step 7: Migrate Environment Variables
+
+- Change all `VITE_` variables to `NEXT_PUBLIC_`.
+- Replace `import.meta.env.MODE` with `process.env.NODE_ENV`.
+- Replace `import.meta.env.PROD` with `process.env.NODE_ENV === 'production'`.
+- Replace `import.meta.env.SSR` with `typeof window !== 'undefined'`.
+
+### Step 8: Update Scripts in `package.json`
+
+Update your `scripts` to use Next.js commands:
+
+```json
+{
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  }
+}
+```
+
+And update `.gitignore`:
+
+```
+.next
+next-env.d.ts
+dist
+```
+
+### Step 9: Clean Up
+
+Remove Vite-related files from your project:
+
+- Delete `main.tsx`
+- Delete `index.html`
+- Delete `vite-env.d.ts`
+- Delete `vite.config.ts`
+- Uninstall Vite dependencies
+
+Removing vite
+
+```bash
+npm uninstall vite @vitejs/plugin-react react-router-dom
+```
+
+Install SASS
+
+```bash
+ npm i sass
+```
+
+## Next Steps
+
+Now that your Next.js app is up and running, you can start leveraging additional features:
+
+- Migrate from React Router to Next.js App Router for automatic code splitting, server-side rendering, and React Server Components.
+- Optimize images and fonts with Next.js built-in components.
+- Use Next.js's built-in components for third-party scripts optimization.
+- Update your ESLint configuration to support Next.js rules.
+
+This concludes the initial migration process from Vite to Next.js.
+
+</details>
