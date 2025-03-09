@@ -1,7 +1,7 @@
+import Image from 'next/image';
 import React, { useContext } from 'react';
 import styles from './index.module.scss';
-import nextIcon from '../../../assets/icons/next.png';
-import previousIcon from '../../../assets/icons/previous.png';
+
 import { ThemeContext } from '../../../context/themeContext';
 import classNames from 'classnames';
 
@@ -39,10 +39,13 @@ const Pagination: React.FC<PaginationProps> = ({
           disabled={currentPage === 1}
           onClick={(e) => handlePageChange(e, currentPage - 1)}
         >
-          <img
-            src={previousIcon}
+          <Image
+            src="/icons/previous.png"
+            width="11"
+            height="11"
             alt="previous"
-            className={styles.previousIcon}
+            priority
+            className={styles.downloadsIcon}
           />
           Previous
         </button>
@@ -57,7 +60,15 @@ const Pagination: React.FC<PaginationProps> = ({
           data-testid="next-page"
           onClick={(e) => handlePageChange(e, currentPage + 1)}
         >
-          Next <img src={nextIcon} alt="next" className={styles.nextIcon} />
+          Next
+          <Image
+            src="/icons/next.png"
+            width="11"
+            height="11"
+            alt="next"
+            priority
+            className={styles.nextIcon}
+          />
         </button>
       </div>
     </div>

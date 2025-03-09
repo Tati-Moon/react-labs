@@ -1,5 +1,5 @@
 export default {
-  collectCoverageFrom: ['**/*.tsx'],
+  collectCoverageFrom: ['src/**/*.tsx', 'src/**/*.ts'],
   coveragePathIgnorePatterns: [
     '<rootDir>[/\\\\](node_modules|.next|jest|docker|Deploy|.vscode|public)[/\\\\]',
   ],

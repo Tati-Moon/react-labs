@@ -1,6 +1,7 @@
+import Image from 'next/image';
 import React, { useContext } from 'react';
 import styles from './index.module.scss';
-import searchIcon from '../../../assets/icons/search.png';
+
 import useLocalStorage from '../../../hooks/UseLocalStorage';
 import { ThemeContext } from '../../../context/themeContext';
 import classNames from 'classnames';
@@ -42,7 +43,14 @@ const Search: React.FC<SearchProps> = ({ onSearch }) => {
         placeholder="Search for Star Wars characters..."
       />
       <button className={styles.searchButton} onClick={handleSearch}>
-        <img src={searchIcon} alt="search" className={styles.searchIcon} />{' '}
+        <Image
+          src="/icons/search.png"
+          width="20"
+          height="20"
+          alt="search"
+          priority
+          className={styles.searchIcon}
+        />
         Search
       </button>
     </div>

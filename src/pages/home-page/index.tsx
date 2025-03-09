@@ -1,30 +1,31 @@
+import Image from 'next/image';
+import styles from './index.module.scss';
 import React, { useState, useEffect, useContext } from 'react';
-import { useNavigate, useLocation, Outlet } from 'react-router-dom';
+import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
-
-import Pagination from '../../components/home-page/pagination';
+import classNames from 'classnames';
 import { ITEMS_PER_PAGE } from '../../consts/constants';
-import logoIcon from '../../assets/icons/logo.png';
+import { ThemeContext } from '../../context/themeContext';
+import Pagination from '../../components/home-page/pagination';
 import Search from '../../components/home-page/search';
 import ThemeToggle from '../../components/shared/themeToggle';
-import { ThemeContext } from '../../context/themeContext';
-import classNames from 'classnames';
-import styles from './index.module.scss';
 import { useFetchAllQuery } from '../../services/PeopleService';
 import { RootState } from '../../store/store';
 import Flyout from '../../components/home-page/flyout';
 import CardList from '../../components/home-page/card-list';
+import Details from '../../components/home-page/details';
+import Link from 'next/link';
 
 const HomePage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchItem, setSearchItem] = useState(
-    localStorage.getItem('searchItem') ?? ''
-  );
-  const navigate = useNavigate();
-  const location = useLocation();
+  const [searchItem, setSearchItem] = useState('');
   const { theme } = useContext(ThemeContext);
-
   const isLight = theme === 'light';
+
+  const searchParams = useSearchParams();
+  const id = searchParams.get('id');
+  const router = useRouter();
+  const pathname = usePathname();
 
   const { data, error, isLoading } = useFetchAllQuery({
     search: searchItem,
@@ -39,58 +40,43 @@ const HomePage: React.FC = () => {
   );
   const selectedCount = Object.values(selectedPeoples).filter(Boolean).length;
 
+  useEffect(() => {
+    const storedSearchItem = localStorage.getItem('searchItem');
+    if (storedSearchItem) {
+      setSearchItem(storedSearchItem);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (data) {
+      const pageParam = searchParams.get('frontpage');
+      const page = pageParam ? parseInt(pageParam, 10) : 1;
+
+      if (totalPages && (page < 1 || page > totalPages)) {
+        router.push('/not-found');
+      } else {
+        setCurrentPage(page);
+      }
+    }
+  }, [data, totalPages, searchParams, router]);
+
   const handleSearch = (term: string) => {
     setCurrentPage(1);
-    updateUrl(1, null);
+    router.push(`${pathname}?frontpage=1`);
     setSearchItem(term);
     localStorage.setItem('searchItem', term);
   };
 
   const handlePageChange = (page: number) => {
-    updateUrl(page, null);
+    router.push(`${pathname}?frontpage=${page}`);
     setCurrentPage(page);
   };
 
   const handleItemClick = (id: string) => {
-    updateUrl(currentPage, id);
+    router.push(`${pathname}?frontpage=${currentPage}&id=${id}`);
   };
 
-  const handleCloseDetails = () => {
-    updateUrl(currentPage, null);
-  };
-
-  const handleLeftSectionClick = () => {
-    if (showDetails) {
-      handleCloseDetails();
-    }
-  };
-
-  const updateUrl = (page: number, detailsId: string | null) => {
-    const searchParams = new URLSearchParams(location.search);
-    searchParams.set('frontpage', page.toString());
-
-    let newPath;
-    if (detailsId) {
-      newPath = `/home/details/${detailsId}`;
-    } else {
-      newPath = '/home';
-    }
-
-    navigate(`${newPath}?${searchParams.toString()}`);
-  };
-
-  const showDetails = location.pathname.includes('details');
-
-  useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const page = parseInt(searchParams.get('frontpage') ?? '1', 10);
-
-    if (totalPages && (page < 1 || page > totalPages)) {
-      navigate('/not-found', { replace: true });
-    } else {
-      setCurrentPage(page);
-    }
-  }, [totalPages, navigate, location.search]);
+  const showDetails = Boolean(id);
 
   return (
     <>
@@ -100,7 +86,16 @@ const HomePage: React.FC = () => {
         })}
       >
         <div className={styles.logo}>
-          <img src={logoIcon} alt="logo" className={styles.logoIcon} />
+          <Link href="/">
+            <Image
+              src="/icons/logo.png"
+              width="30"
+              height="30"
+              alt="logo"
+              priority
+              className={styles.logoIcon}
+            />
+          </Link>
         </div>
         <div className={styles.toggle}>
           <div className={styles.themeToggle}>
@@ -112,7 +107,7 @@ const HomePage: React.FC = () => {
       <h1>Star Wars Character Search</h1>
 
       <div className={styles.homePage}>
-        <div className={styles.leftSection} onClick={handleLeftSectionClick}>
+        <div className={styles.leftSection}>
           <CardList
             results={results}
             loading={isLoading}
@@ -128,9 +123,10 @@ const HomePage: React.FC = () => {
             />
           )}
         </div>
+
         {showDetails && (
           <div className={styles.rightSection}>
-            <Outlet context={{ handleCloseDetails }} />
+            <Details />
           </div>
         )}
       </div>

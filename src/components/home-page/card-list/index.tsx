@@ -1,8 +1,8 @@
+import Image from 'next/image';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import Card from './card';
 import styles from './index.module.scss';
-import loadGif from '../../../assets/icons/load.gif';
 import { ICharacterDetail } from '../../../models/ICharacterDetail';
 import { togglePeopleSelection } from '../../../store/reducers/SelectedPeoplesSlice';
 
@@ -30,7 +30,14 @@ const CardList: React.FC<CardListProps> = ({
   if (loading) {
     return (
       <div className={styles.loading}>
-        <img src={loadGif} alt="Loading" className={styles.loadGif} />
+        <Image
+          src="/icons/load.gif"
+          width="900"
+          height="600"
+          alt="Loading"
+          priority
+          className={styles.loadGif}
+        />
       </div>
     );
   }

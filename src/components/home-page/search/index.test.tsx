@@ -9,7 +9,6 @@ jest.spyOn(Storage.prototype, 'setItem').mockImplementation((key, value) => {
   console.log(`LocalStorage set: ${key} = ${value}`);
 });
 
-jest.mock('../../../assets/icons/search.png', () => 'mocked-search.png');
 describe('Search Component', () => {
   const onSearchMock = jest.fn();
 

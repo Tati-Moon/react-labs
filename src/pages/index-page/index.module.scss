@@ -1,0 +1,114 @@
+@use '../../styles/colors.scss' as *;
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 25%;
+    background-color: #cfff5f;
+  }
+  25% {
+    background-position: 50% 50%;
+    background-color: #ff5f5f;
+  }
+  50% {
+    background-position: 100% 50%;
+    background-color: #e7a10a;
+  }
+  75% {
+    background-position: 50% 50%;
+    background-color: #ff7e5f;
+  }
+  100% {
+    background-position: 0% 25%;
+    background-color: #a50c0c;
+  }
+}
+
+.container {
+  background-color: #00000013;
+  color: $text-light;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+
+  background-image: linear-gradient(to right, #333 1px, transparent 1px),
+    linear-gradient(to bottom, #333 1px, transparent 1px);
+  background-size: 40px 40px;
+
+  .title {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    background-image: linear-gradient(90deg, #ff3300, #fbff1e, #ff9900);
+    background-size: 200% 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: gradientAnimation 3s infinite linear;
+    display: inline-block;
+    text-transform: uppercase;
+  }
+
+  .description {
+    font-size: 1.2rem;
+    max-width: 600px;
+    margin-bottom: 20px;
+  }
+
+  .imageGrid {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+
+    .imageContainer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .imageText {
+      margin-top: 8px;
+      font-size: 1rem;
+      color: $text-dark;
+    }
+  }
+
+  .link {
+    font-size: 1.2rem;
+
+    color: #eeff00;
+    text-decoration: none;
+    margin-top: 20px;
+    transition: color 0.3s ease-in-out;
+
+    &:hover {
+      color: #ff9900;
+    }
+  }
+
+  &_light {
+    background-image: linear-gradient(
+        to right,
+        $light-input 1px,
+        transparent 1px
+      ),
+      linear-gradient(to bottom, $light-input 1px, transparent 1px);
+    background-size: 40px 40px;
+
+    background-color: #00000013;
+    color: $text-black;
+
+    .link {
+      color: #ff9900;
+
+      &:hover {
+        color: #ff5e1e;
+      }
+    }
+  }
+}

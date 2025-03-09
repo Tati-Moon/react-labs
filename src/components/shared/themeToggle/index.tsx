@@ -1,8 +1,7 @@
+import Image from 'next/image';
 import React, { useContext } from 'react';
 import { ThemeContext } from '../../../context/themeContext';
 import styles from './index.module.scss';
-import moonIcon from '../../../assets/icons/moon.png';
-import sunIcon from '../../../assets/icons/sun.png';
 import classNames from 'classnames';
 
 const ThemeToggle: React.FC = () => {
@@ -16,9 +15,12 @@ const ThemeToggle: React.FC = () => {
         [styles.toggle_light]: isLight,
       })}
     >
-      <img
-        src={theme === 'dark' ? moonIcon : sunIcon}
+      <Image
+        src={theme === 'dark' ? '/icons/moon.png' : '/icons/sun.png'}
+        width="10"
+        height="10"
         alt="Theme Icon"
+        priority
         className={styles.buttonIcon}
       />
       {theme === 'dark' ? 'Dark' : 'Light'}

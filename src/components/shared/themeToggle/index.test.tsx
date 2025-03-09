@@ -2,9 +2,6 @@ import { render, fireEvent } from '@testing-library/react';
 import { ThemeContext, ThemeContextType } from '../../../context/themeContext';
 import ThemeToggle from '.';
 
-jest.mock('../../../assets/icons/moon.png', () => 'mocked-moon.png');
-jest.mock('../../../assets/icons/sun.png', () => 'mocked-sun.png');
-
 const mockThemeContext: ThemeContextType = {
   theme: 'light',
   toggleTheme: jest.fn(),

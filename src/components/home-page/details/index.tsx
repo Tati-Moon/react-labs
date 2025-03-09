@@ -1,20 +1,29 @@
-import styles from './index.module.scss';
-import React, { useContext } from 'react';
-import { useParams, useOutletContext } from 'react-router-dom';
-import { useFetchByIdQuery } from '../../services/PeopleService';
-import loadGif from '../../assets/icons/load.gif';
-import closeIcon from '../../assets/icons/close.png';
-import { ThemeContext } from '../../context/themeContext';
-import classNames from 'classnames';
+'use client';
 
-const Details: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
-  const { handleCloseDetails } = useOutletContext<{
-    handleCloseDetails: () => void;
-  }>();
-  const { data: details, isLoading, error } = useFetchByIdQuery(id || '');
+import { useSearchParams, usePathname, useRouter } from 'next/navigation';
+import styles from './index.module.scss';
+import Image from 'next/image';
+import { useContext } from 'react';
+import classNames from 'classnames';
+import { ThemeContext } from '../../../context/themeContext';
+import { useFetchByIdQuery } from '../../../services/PeopleService';
+
+const Details = () => {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
   const { theme } = useContext(ThemeContext);
   const isLight = theme === 'light';
+  const id = searchParams.get('id');
+  const { data: details, isLoading, error } = useFetchByIdQuery(id ?? '');
+
+  if (!id) return null;
+
+  const handleClose = () => {
+    const params = new URLSearchParams(searchParams);
+    params.delete('id');
+    router.push(`${pathname}?${params.toString()}`);
+  };
 
   return (
     <div
@@ -22,12 +31,27 @@ const Details: React.FC = () => {
         [styles.detailsSection_light]: isLight,
       })}
     >
-      <button onClick={handleCloseDetails} className={styles.closeButton}>
-        <img src={closeIcon} alt="close" className={styles.closeIcon} /> Close
+      <button onClick={handleClose} className={styles.closeButton}>
+        <Image
+          src="/icons/close.png"
+          width="12"
+          height="12"
+          alt="close"
+          priority
+          className={styles.closeIcon}
+        />
+        Close
       </button>
       {isLoading ? (
         <div className={styles.loading}>
-          <img src={loadGif} alt="Loading" className={styles.loadGif} />
+          <Image
+            src="/icons/load.gif"
+            width="900"
+            height="600"
+            alt="Loading"
+            priority
+            className={styles.loadGif}
+          />
         </div>
       ) : error ? (
         <div className={styles.error}>Failed to load character details.</div>
