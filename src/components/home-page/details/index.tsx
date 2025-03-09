@@ -8,13 +8,17 @@ import classNames from 'classnames';
 import { ThemeContext } from '../../../context/themeContext';
 import { useFetchByIdQuery } from '../../../services/PeopleService';
 
-const Details = () => {
+interface DetailsProps {
+  id: string | null;
+}
+
+const Details: React.FC<DetailsProps> = ({ id }) => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
   const { theme } = useContext(ThemeContext);
   const isLight = theme === 'light';
-  const id = searchParams.get('id');
+
   const { data: details, isLoading, error } = useFetchByIdQuery(id ?? '');
 
   if (!id) return null;

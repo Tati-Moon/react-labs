@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
-import CardList from '.';
+import CardList from './index';
 import { ICharacterDetail } from '../../../models/ICharacterDetail';
 import { CharacterDetailsBuilder } from '../../tests/utils/characterDetailsBuilder';
 

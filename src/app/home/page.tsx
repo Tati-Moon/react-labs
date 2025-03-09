@@ -1,6 +1,8 @@
+'use client';
+
 import Image from 'next/image';
-import styles from './index.module.scss';
-import React, { useState, useEffect, useContext } from 'react';
+import styles from './page.module.scss';
+import React, { Suspense, useState, useEffect, useContext } from 'react';
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames';
@@ -79,7 +81,7 @@ const HomePage: React.FC = () => {
   const showDetails = Boolean(id);
 
   return (
-    <>
+    <Suspense fallback={<div>Loading...</div>}>
       <div
         className={classNames(styles.topMenu, {
           [styles.topMenu_light]: isLight,
@@ -126,13 +128,13 @@ const HomePage: React.FC = () => {
 
         {showDetails && (
           <div className={styles.rightSection}>
-            <Details />
+            <Details id={id} />
           </div>
         )}
       </div>
 
       {selectedCount > 0 && <Flyout selectedCount={selectedCount} />}
-    </>
+    </Suspense>
   );
 };
 

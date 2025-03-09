@@ -12,6 +12,14 @@ jest.mock('react-redux', () => ({
   useSelector: jest.fn(),
 }));
 
+jest.mock('next/image', () => {
+  const MockedImage = ({ src, alt }: { src: string; alt?: string }) => {
+    return <img src={src} alt={alt || 'mocked image'} />;
+  };
+  MockedImage.displayName = 'NextImageMock';
+  return MockedImage;
+});
+
 describe('Flyout Component', () => {
   const store = setupStore();
   const mockDispatch = jest.fn();

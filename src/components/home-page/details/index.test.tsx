@@ -59,6 +59,7 @@ describe('Details Component', () => {
       mockData = null,
       isLoading = false,
       error = null,
+      id = '1',
     } = options;
 
     mockUseFetchByIdQuery.mockReturnValue({
@@ -70,7 +71,7 @@ describe('Details Component', () => {
     return render(
       <Provider store={store}>
         <ThemeContext.Provider value={{ theme, toggleTheme: jest.fn() }}>
-          <Details />
+          <Details id={id} />
         </ThemeContext.Provider>
       </Provider>
     );
@@ -83,6 +84,7 @@ describe('Details Component', () => {
   });
 
   test('fetches and displays character details', async () => {
+
     setup({ mockData: mockCharacter });
 
     await waitFor(() => {
@@ -97,6 +99,7 @@ describe('Details Component', () => {
   });
 
   test('displays an error message if fetch fails', async () => {
+
     setup({ error: new Error('Network error') });
 
     await waitFor(() => {

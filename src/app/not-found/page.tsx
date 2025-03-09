@@ -1,6 +1,10 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import styles from './index.module.scss';
+import styles from './page.module.scss';
+
+export const metadata = {
+  title: 'Page Not Found',
+};
 
 export default function NotFound() {
   return (
@@ -15,8 +19,8 @@ export default function NotFound() {
       <div className={styles.pageNotFoundContainer}>
         <Image
           src="/icons/404.png"
-          width={150}
-          height={150}
+          width="150"
+          height="150"
           alt="404"
           priority
           className={styles.pageNotFoundImage}

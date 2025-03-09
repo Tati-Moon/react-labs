@@ -1,6 +1,6 @@
 import { renderHook, waitFor } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import { useFetchAllQuery, useFetchByIdQuery } from './PeopleService';
+import { useFetchAllQuery, useFetchByIdQuery } from './PeopleService'; // Update the import according to your file structure
 import fetchMock from 'jest-fetch-mock';
 import { setupStore } from '../store/store';
 import { ReactNode } from 'react';

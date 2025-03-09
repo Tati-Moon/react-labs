@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import NotFound from '../404';
+import NotFound from './page';
 import '@testing-library/jest-dom';
 
 describe('NotFound Component', () => {
